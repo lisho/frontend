@@ -1,0 +1,158 @@
+/* src/components/Navbar.css */
+
+/* --- Barra de Navegación Fija --- */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* Sombra más sutil */
+    height: 40px; /* <-- REDUCIR ALTURA (ej: a 60px) */
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 25px;
+      height: 100%;
+  }
+  
+  /* Título/Logo (Estilo específico de Navbar) */
+  .main-title {
+    margin: 0;
+    font-size: 1.5em; /* Ligeramente más pequeño si la barra es más fina */
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+   /* Si el título es un enlace */
+  .main-title a {
+     color: inherit;
+     text-decoration: none;
+  }
+  
+  
+  /* --- Botón Hamburger (Móvil) --- */
+  .mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 8px; /* Ajustar padding si es necesario */
+    cursor: pointer;
+    z-index: 1010;
+    /* Centrar verticalmente si la altura cambia */
+    /* line-height: 0;  o usar flex en el contenedor */
+  }
+  
+  /* Icono Hamburger (usando spans) */
+  .hamburger-icon {
+    display: block;
+    position: relative;
+    width: 22px; /* Ligeramente más pequeño */
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: background-color 0s 0.2s linear;
+  }
+  .hamburger-icon::before,
+  .hamburger-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: transform 0.2s ease-in-out, top 0.2s 0.2s ease-in-out;
+  }
+  .hamburger-icon::before {
+    top: -6px; /* Ajustar separación si el icono es más pequeño */
+  }
+  .hamburger-icon::after {
+    top: 6px;
+  }
+  
+  /* Animación Hamburger a 'X' */
+  .mobile-menu-active .hamburger-icon { /* ... (sin cambios en la lógica) ... */ }
+  .mobile-menu-active .hamburger-icon::before { /* ... (sin cambios en la lógica) ... */ }
+  .mobile-menu-active .hamburger-icon::after { /* ... (sin cambios en la lógica) ... */ }
+  
+  /* --- Lista de Enlaces --- */
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Reducir gap si es necesario */
+  }
+  
+  .nav-links a {
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+    padding-bottom: 3px; /* Menos padding si la barra es más fina */
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    font-size: 0.95em; /* Ajustar tamaño fuente si es necesario */
+  }
+  .nav-links a:hover {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-secondary);
+  }
+  
+  
+  /* --- Estilos Responsivos (Móvil) --- */
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+  
+    .nav-links {
+      position: absolute;
+      top: 60px; /* <-- AJUSTAR AL NUEVO VALOR DE 'height' del .main-nav */
+      left: 0;
+      width: 100%;
+      background-color: var(--color-surface);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      flex-direction: column;
+      align-items: stretch;
+      padding: 10px 0; /* Reducir padding vertical si es necesario */
+      gap: 0;
+      max-height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease-out, visibility 0s 0.3s linear; /* Transición más rápida? */
+    }
+  
+    .nav-links.open {
+      max-height: 400px; /* Ajustar si hay muchos enlaces */
+      visibility: visible;
+      padding: 10px 0;
+      transition: max-height 0.3s ease-in, padding 0.3s ease-in, visibility 0s 0s linear;
+    }
+  
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block;
+      padding: 12px 25px; /* Ajustar padding si es necesario */
+      border-bottom: 1px solid var(--color-border);
+      text-align: center;
+      color: var(--color-primary);
+      font-size: 1em; /* Mantener buen tamaño para tap */
+    }
+     .nav-links li:last-child a { border-bottom: none; }
+     .nav-links a:hover {
+         background-color: #f8f9f9;
+         border-bottom-color: var(--color-border);
+     }
+  } /* Fin de @media */

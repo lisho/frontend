@@ -61,6 +61,7 @@
     outline: none;
     border-color: var(--color-secondary); /* Borde azul al enfocar */
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Sombra exterior azul */
+    
 }
 
 .form-group textarea {
@@ -92,10 +93,64 @@
   margin-bottom: 15px;
 }
 
+/* --- ESTILOS PARA CAMPOS DE INGREDIENTES --- */
+
+/* Aplicar estilos base de input/select a los campos de ingredientes */
+.ingredient-item .input-amount,
+.ingredient-item .input-unit,
+.ingredient-item .input-name {
+  /* Copia/Aplica los estilos base de .form-group input/select */
+  padding: 12px 15px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-small);
+  box-sizing: border-box; /* Importante */
+  font-size: 1em;
+  background-color: #fdfdfd; /* O el color de fondo que usen los otros */
+  color: var(--color-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0; /* Resetea márgenes por si acaso */
+  height: 46px; /* <-- FIJA UNA ALTURA CONSISTENTE (ajusta este valor) */
+                  /* Inspecciona la altura computada de tus otros inputs/selects */
+                  /* para que coincidan. Incluye padding y borde. */
+  /* NO INCLUIR 'width: 100%' aquí */
+}
+
 /* Ajustar anchos de ingredientes */
 .ingredient-item .input-amount { flex-basis: 100px; flex-grow: 0; }
 .ingredient-item .input-unit { flex-basis: 120px; flex-grow: 0; }
 .ingredient-item .input-name { flex: 1; } /* Ocupar resto */
+
+* Aplicar estilos de foco a los campos de ingredientes */
+.ingredient-item .input-amount:focus,
+.ingredient-item .input-unit:focus,
+.ingredient-item .input-name:focus {
+  /* Copia/Aplica los estilos de foco de .form-group input/select:focus */
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Asegurar alineación vertical si la altura es fija */
+.ingredient-item {
+  display: flex;
+  /* align-items: center; */ /* <-- Cambia a 'center' si prefieres centrado verticalmente */
+  align-items: flex-start; /* Mantenemos flex-start por si el nombre ocupa varias líneas */
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Ajuste para el botón de remover si se usa altura fija en inputs */
+.ingredient-item .button-remove {
+   margin-top: 8px; /* Ajusta este margen para alinear verticalmente con los inputs */
+                   /* O usa align-self: center; si .ingredient-item usa align-items: center */
+    /* align-self: center; */
+}
+
+/* Ajuste para el select de unidad si se usa altura fija */
+.ingredient-item .input-unit {
+    /* Puede que necesites ajustar padding-top/bottom específicamente */
+    /* si el texto interno no se centra bien con la altura fija */
+}
 
 .step-item .step-number {
     font-weight: 600;

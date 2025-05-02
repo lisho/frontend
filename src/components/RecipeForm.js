@@ -93,23 +93,50 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
   }, [isEditMode]); // Dependencia isEditMode para resetear categoría seleccionada
 
 
-  // Efecto para rellenar datos en modo edición (igual que antes)
   useEffect(() => {
+    console.log("Effect for initialData triggered. initialData:", initialData); // <-- AÑADE ESTE LOG PARA DEPURAR
     if (initialData) {
-      // ... (rellenar title, description, etc.) ...
-      setIngredients(initialData.ingredients?.map(ing => ({ // Asegura estructura completa
+      // --- ASEGÚRATE DE QUE TODAS ESTAS LÍNEAS ESTÉN PRESENTES ---
+      setTitle(initialData.title || '');
+      setDescription(initialData.description || '');
+      setPreparationTime(initialData.preparationTime || '');
+      setCookingTime(initialData.cookingTime || '');
+      setServings(initialData.servings || '');
+      setCategoryId(initialData.categoryId || ''); // Asegúrate de que 'categoryId' sea el nombre correcto
+      setImageUrl(initialData.imageUrl || '');
+      // --- FIN DE LAS LÍNEAS A VERIFICAR ---
+
+      // La parte de ingredientes (esta debería estar funcionando según dices)
+      setIngredients(initialData.ingredients?.map(ing => ({
           amount: ing.amount || '',
           unit: ing.unit || '',
           name: ing.name || ''
       })) || [{ ...emptyIngredient }]);
+
+      // La parte de pasos
       setSteps(initialData.steps || ['']);
-       // ... (rellenar categoryId, imageUrl, etc.) ...
+
     } else {
-        // Resetea si no hay initialData (ej: al pasar de edit a add)
-         setIngredients([{ ...emptyIngredient }]);
-         // ... (resetear otros campos si es necesario) ...
+      // --- LÓGICA DE RESETEO PARA MODO AÑADIR ---
+      // Asegúrate de que esto solo se ejecute cuando NO estás en modo edición
+      // o cuando initialData es explícitamente null.
+      console.log("Effect for initialData: Resetting fields for add mode."); // <-- AÑADE ESTE LOG
+      setTitle('');
+      setDescription('');
+      setPreparationTime('');
+      setCookingTime('');
+      setServings('');
+      // Decide si quieres resetear la categoría o dejar la primera seleccionada
+      // setCategoryId(categories[0]?.id || ''); // O dejarla vacía si es preferible
+      setCategoryId(''); // Resetearla puede ser más seguro
+      setImageUrl('');
+      setIngredients([{ ...emptyIngredient }]);
+      setSteps(['']);
+      setError(null); // Limpiar errores al cambiar de modo
     }
-  }, [initialData]);
+    // La dependencia DEBE ser [initialData] para que se ejecute cuando lleguen los datos
+    // Si añadiste 'categories' aquí, podría causar problemas.
+  }, [initialData]); // <-- VERIFICA LAS DEPENDENCIAS
 
   // --- Click Listener para cerrar sugerencias ---
   useEffect(() => {

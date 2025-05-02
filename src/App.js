@@ -1,48 +1,71 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+
+// Importa los nuevos componentes
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+// Importa las páginas
 import HomePage from './pages/HomePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import AddEditRecipePage from './pages/AddEditRecipePage';
-// Importaremos más páginas aquí a medida que las creemos
+
+// Importa los estilos globales restantes de App (si los hay)
 import './App.css';
 
+// Wrapper de contenido
+function AppContent() {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const location = useLocation();
+
+    // Cierra menú al navegar
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [location]);
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    // Ajusta esta altura al valor exacto en Navbar.css
+    const headerHeight = '60px'; // <-- ACTUALIZA ESTA ALTURA
+
+    return (
+        // El padding se aplica aquí para empujar el contenido
+        <div className="App" style={{ paddingTop: headerHeight }}>
+
+            {/* Renderiza el componente Navbar */}
+            <Navbar
+                isMobileMenuOpen={isMobileMenuOpen}
+                toggleMobileMenu={toggleMobileMenu}
+            />
+
+            {/* --- Contenido Principal --- */}
+            <main className="content">
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/recipe/:id" element={<RecipeDetailPage />} />
+                    <Route path="/add-recipe" element={<AddEditRecipePage />} />
+                    <Route path="/edit-recipe/:id" element={<AddEditRecipePage />} />
+                    <Route path="*" element={<h2>Página no encontrada (404)</h2>} />
+                </Routes>
+            </main>
+
+            {/* Renderiza el componente Footer */}
+            <Footer />
+
+        </div>
+    );
+}
+
+// Componente principal
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        {/* --- Barra de Navegación Simple --- */}
-        <nav className="main-nav">
-        <ul>
-          <li><Link to="/">Inicio</Link></li>
-          {/* Nuevo enlace */}
-          <li><Link to="/add-recipe">Añadir Receta</Link></li>
-        </ul>
-        <h1 className="main-title">Mi Recetario Pastel</h1>
-      </nav>
-
-        {/* --- Contenido Principal --- */}
-        <main className="content">
-        <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/recipe/:id" element={<RecipeDetailPage />} />
-        {/* Ruta para añadir nueva receta */}
-        <Route path="/add-recipe" element={<AddEditRecipePage />} />
-        {/* Ruta para editar una receta existente */}
-        <Route path="/edit-recipe/:id" element={<AddEditRecipePage />} />
-        {/* <Route path="/category/:categoryId" element={<CategoryPage />} /> */}
-        {/* Ruta comodín para 404 */}
-        <Route path="*" element={<h2>Página no encontrada (404)</h2>} />
-      </Routes>
-        </main>
-
-        {/* --- Footer Simple --- */}
-        <footer className="main-footer">
-          <p>© {new Date().getFullYear()} Mi Recetario Pastel</p>
-        </footer>
-      </div>
-    </Router>
-  );
+    return (
+        <Router>
+            <AppContent />
+        </Router>
+    );
 }
 
 export default App;

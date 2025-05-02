@@ -1,0 +1,10 @@
+/* src/components/Footer.css */
+.main-footer {
+    text-align: center;
+    padding: 25px 0;
+    border-top: 1px solid var(--color-border);
+    margin-top: auto; /* Mantiene el footer abajo */
+    color: var(--color-text-light);
+    font-size: 0.9em;
+    background-color: var(--color-surface); /* Puede tener fondo propio */
+  }
