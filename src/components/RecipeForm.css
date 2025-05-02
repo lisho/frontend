@@ -1,0 +1,160 @@
+/* src/components/RecipeForm.css */
+.recipe-form {
+    background-color: #ffffff; /* Fondo blanco para el form */
+    padding: 30px;
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--box-shadow-light);
+    margin-bottom: 30px;
+  }
+  
+  .recipe-form h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: var(--color-primary); /* Rosa pastel */
+  }
+  
+  .form-error {
+    background-color: #ffdddd; /* Fondo rojo claro */
+    color: #d8000c; /* Rojo oscuro */
+    border: 1px solid #d8000c;
+    padding: 10px 15px;
+    border-radius: var(--border-radius-small);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-secondary); /* Azul bebé */
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group input[type="url"],
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-small);
+    box-sizing: border-box; /* Para que el padding no aumente el ancho */
+    font-size: 1em;
+    background-color: var(--color-background); /* Blanco muy suave */
+    color: var(--color-text);
+  }
+  .form-group textarea {
+      resize: vertical; /* Permitir redimensionar verticalmente */
+  }
+  
+  /* Estilos para secciones de ingredientes y pasos */
+  .form-section {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-medium);
+    padding: 20px;
+    margin-bottom: 25px;
+    background-color: #fdfdfd; /* Un gris aún más claro */
+  }
+  
+  .form-section legend {
+    font-weight: bold;
+    color: var(--color-primary);
+    padding: 0 10px; /* Espaciado alrededor del texto */
+    margin-left: 10px; /* Alineación */
+  }
+  
+  .ingredient-item, .step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap; /* Para que se adapte en pantallas pequeñas */
+  }
+  
+  .ingredient-item .input-amount { flex: 1; min-width: 80px; }
+  .ingredient-item .input-unit { flex: 1; min-width: 100px; }
+  .ingredient-item .input-name { flex: 3; min-width: 150px; } /* Más ancho */
+  
+  .step-item .step-number {
+      font-weight: bold;
+      color: var(--color-secondary);
+      width: 25px; /* Ancho fijo para el número */
+      text-align: right;
+  }
+  .step-item .input-step { flex: 1; }
+  
+  .button-remove {
+    background-color: #ffb3b3; /* Rosa más fuerte para peligro */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Botón circular */
+    width: 25px;
+    height: 25px;
+    font-size: 1.2em;
+    line-height: 25px; /* Centrar la 'x' */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding: 0;
+  }
+  .button-remove:hover {
+    background-color: #ff8080;
+  }
+  .button-remove:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .button-add {
+    background-color: #a2d2ff; /* Azul bebé */
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--border-radius-small);
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px; /* Espacio después de la lista */
+    font-weight: bold;
+  }
+  .button-add:hover {
+    background-color: #8cbce0;
+  }
+  
+  /* Detalles adicionales en fila */
+  .form-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+      flex-wrap: wrap; /* Adaptable */
+  }
+  .form-row .form-group {
+      flex: 1; /* Ocupar espacio equitativo */
+      min-width: 120px; /* Ancho mínimo */
+      margin-bottom: 0; /* Quitar margen inferior si están en fila */
+  }
+  
+  
+  .button-submit {
+    background-color: var(--color-primary); /* Rosa pastel */
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    border: none;
+    border-radius: var(--border-radius-medium);
+    padding: 12px 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: block; /* Ocupar todo el ancho */
+    width: 100%;
+    margin-top: 20px; /* Espacio antes del botón */
+  }
+  
+  .button-submit:hover {
+    background-color: #f5b6cf; /* Rosa un poco más oscuro */
+  }

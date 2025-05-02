@@ -1,13 +1,49 @@
+/* src/index.css */
+:root {
+  /* Paleta Pastel Suave - ¡Ajusta estos colores a tu gusto! */
+  --color-primary: #f8cdda; /* Rosa pastel */
+  --color-secondary: #a2d2ff; /* Azul bebé */
+  --color-accent: #fffbcc; /* Amarillo pálido */
+  --color-background: #fefefa; /* Blanco muy suave */
+  --color-text: #4a4a4a; /* Gris oscuro suave */
+  --color-text-light: #7a7a7a; /* Gris más claro */
+  --color-border: #e0e0e0; /* Gris muy claro para bordes */
+
+  --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-family-serif: Georgia, 'Times New Roman', Times, serif; /* Para títulos quizás? */
+
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --box-shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-family-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--color-secondary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* font-family: var(--font-family-serif); */ /* Descomenta si quieres títulos serif */
+  color: var(--color-primary); /* Títulos en rosa */
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
 }
