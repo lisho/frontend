@@ -1,131 +1,153 @@
 /* src/pages/RecipeDetailPage.css */
 .recipe-detail {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: var(--border-radius-medium);
-    box-shadow: var(--box-shadow-light);
-  }
-  
-  .recipe-actions {
-      display: flex;
-      justify-content: flex-end; /* Alinea botones a la derecha */
-      gap: 10px;
-      margin-bottom: 20px;
-  }
-  
-  /* Estilo base para botones de acción */
-  .button {
-      padding: 8px 15px;
-      border-radius: var(--border-radius-small);
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-      transition: background-color 0.2s ease, color 0.2s ease;
-      display: inline-block; /* Para que Link se comporte como botón */
-      text-align: center;
-  }
-  
-  .button-edit {
-      background-color: var(--color-secondary); /* Azul */
-      color: #fff;
-  }
-  .button-edit:hover {
-      background-color: #8cbce0;
-  }
-  
-  .button-delete {
-      background-color: #ff8a80; /* Rojo suave */
-      color: #fff;
-  }
-  .button-delete:hover {
-      background-color: #f44336; /* Rojo más fuerte */
-  }
-  
-  
-  .recipe-title {
-    margin-top: 0; /* El margen ya está en recipe-actions */
-    margin-bottom: 20px;
-    color: var(--color-primary);
-    text-align: center; /* Centrar título */
-    font-size: 2.2em;
-  }
-  
-  .recipe-image {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--border-radius-medium);
-    margin: 0 auto 25px auto; /* Centrar y dar espacio inferior */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .recipe-description {
-    font-style: italic;
-    color: var(--color-text-light);
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.1em;
-  }
-  
-  .recipe-meta {
+  background-color: var(--color-surface); /* Blanco */
+  padding: 30px 40px; /* Más padding */
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--box-shadow-light);
+  border: 1px solid var(--color-border);
+}
+
+.recipe-actions {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap; /* Para pantallas pequeñas */
-    padding: 15px 0;
-    margin-bottom: 30px;
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border); /* Separador */
+}
+
+/* Usar las clases de botones globales definidas en index.css */
+.recipe-actions .button-edit { /* Clase específica si es necesario */
+     /* Hereda de .button y .button-secondary */
+}
+.recipe-actions .button-delete {
+    /* Hereda de .button y .button-danger */
+}
+
+
+.recipe-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--color-primary);
+  font-size: 2.5em; /* Título más grande */
+  font-weight: 700;
+  text-align: left; /* Alineación izquierda */
+  line-height: 1.2;
+}
+
+.recipe-category-name { /* Añadir un span en el JSX para esto */
+    display: block;
     font-size: 0.9em;
-    color: var(--color-secondary); /* Azul bebé */
-  }
-  .recipe-meta span {
-    background-color: #e7f3ff; /* Fondo azul muy pálido */
-    padding: 5px 10px;
-    border-radius: var(--border-radius-small);
-  }
-  
+    font-weight: 600;
+    color: var(--color-secondary); /* Azul brillante */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+
+.recipe-image {
+  display: block;
+  width: 100%; /* Ocupar ancho completo */
+  max-width: 600px; /* Ancho máximo para que no sea enorme */
+  height: auto;
+  border-radius: var(--border-radius-medium);
+  margin: 0 auto 30px auto; /* Centrar imagen grande */
+  /* box-shadow: var(--box-shadow-light); */ /* Quitar sombra si se ve recargado */
+}
+
+.recipe-description {
+  font-style: normal; /* Sin cursiva */
+  color: var(--color-text); /* Texto normal */
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 1.1em;
+  line-height: 1.7;
+}
+
+.recipe-meta {
+  display: flex;
+  justify-content: flex-start; /* Alinear a la izquierda */
+  gap: 25px; /* Más espacio */
+  flex-wrap: wrap;
+  padding: 20px 0;
+  margin-bottom: 35px;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95em;
+  color: var(--color-text-light);
+}
+.recipe-meta span {
+  background-color: transparent; /* Sin fondo */
+  padding: 0;
+  border-radius: 0;
+  font-weight: 500; /* Ligeramente más peso */
+   /* Podríamos añadir iconos aquí */
+}
+.recipe-meta span strong { /* Para el valor numérico */
+    color: var(--color-text);
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.recipe-content {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr; /* Ingredientes más estrechos */
+  gap: 40px; /* Más separación */
+}
+
+@media (max-width: 800px) { /* Ajustar breakpoint */
   .recipe-content {
-    display: grid; /* Usar grid para columnas */
-    grid-template-columns: 1fr 2fr; /* Columna de ingredientes más estrecha */
-    gap: 30px;
+    grid-template-columns: 1fr;
   }
-  
-  /* Adaptar a una columna en pantallas pequeñas */
-  @media (max-width: 768px) {
-    .recipe-content {
-      grid-template-columns: 1fr; /* Una sola columna */
-    }
-  }
-  
-  
-  .recipe-ingredients h3,
-  .recipe-steps h3 {
-    color: var(--color-primary);
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--color-accent); /* Línea amarilla pálida debajo */
-    padding-bottom: 5px;
-  }
-  
-  .recipe-ingredients ul,
-  .recipe-steps ol {
-    padding-left: 20px; /* Indentación estándar */
-  }
-  
-  .recipe-ingredients li,
-  .recipe-steps li {
-    margin-bottom: 10px; /* Espacio entre ítems */
-    line-height: 1.5;
-  }
-  
-  /* Mensaje de error genérico */
-  .error-message {
-      color: #d8000c;
-      background-color: #ffdddd;
-      border: 1px solid #d8000c;
-      padding: 15px;
-      border-radius: var(--border-radius-small);
-      text-align: center;
-      margin: 20px 0;
-  }
+}
+
+.recipe-ingredients h3,
+.recipe-steps h3 {
+  font-size: 1.4em; /* Títulos de sección más grandes */
+  color: var(--color-primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-secondary); /* Borde azul */
+}
+
+.recipe-ingredients ul,
+.recipe-steps ol {
+  padding-left: 0; /* Quitar indentación por defecto */
+  list-style-position: inside; /* Poner números/viñetas dentro */
+}
+.recipe-steps ol {
+    list-style-type: decimal; /* Asegurar números */
+}
+.recipe-ingredients ul {
+    list-style-type: none; /* Quitar viñetas de ingredientes */
+}
+
+
+.recipe-ingredients li,
+.recipe-steps li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.recipe-ingredients li {
+    border-bottom: 1px dashed var(--color-border); /* Separador suave ingredientes */
+    padding-bottom: 10px;
+}
+.recipe-ingredients li span { /* Para formatear cantidad/unidad/nombre */
+    display: inline-block; /* o block */
+    margin-right: 8px;
+}
+.recipe-ingredients li span.ing-name {
+    font-weight: 500;
+}
+
+
+.error-message { /* Estilo de error genérico (puede ir en index.css o App.css) */
+    color: var(--color-accent);
+    background-color: #fbeae8; /* Fondo rojo muy pálido */
+    border: 1px solid var(--color-accent);
+    padding: 15px 20px;
+    border-radius: var(--border-radius-medium);
+    text-align: center;
+    margin: 20px 0;
+}

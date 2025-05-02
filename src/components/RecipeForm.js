@@ -1,10 +1,29 @@
 // src/components/RecipeForm.js
-import React, { useState, useEffect } from 'react';
-import { getAllCategories } from '../services/api'; // Necesitamos las categorías
+import React, { useState, useEffect, useRef } from 'react';
+import { getAllCategories, getUniqueIngredients } from '../services/api'; // Necesitamos las categorías
 import './RecipeForm.css'; // Crearemos este archivo para estilos
 
 // Estado inicial para un ingrediente vacío
 const emptyIngredient = { amount: '', unit: '', name: '' };
+
+// Define las unidades comunes fuera del componente
+const COMMON_UNITS = [
+  '', // Opción vacía/default
+  'gr', 'kg', 'mg',
+  'ml', 'cl', 'l',
+  'cucharadita', 'cdta', // teaspoon
+  'cucharada', 'cda',   // tablespoon
+  'taza(s)',
+  'pizca(s)',
+  'diente(s)',
+  'unidad(es)', 'ud(s)',
+  'lata(s)',
+  'paquete(s)',
+  'al gusto',
+  // ... añade más unidades relevantes para ti
+];
+
+
 
 function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
   const [title, setTitle] = useState('');
@@ -19,51 +38,122 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [error, setError] = useState(null); // Para errores de carga o envío
+  const [isLoading, setIsLoading] = useState(false); // Estado para indicar si está cargando
 
-  // Cargar categorías al montar el componente
-  useEffect(() => {
-    const fetchCategories = async () => {
+  // --- Nuevos Estados para Sugerencias ---
+  const [allIngredientNames, setAllIngredientNames] = useState([]); // Lista completa
+  const [suggestions, setSuggestions] = useState([]); // Sugerencias filtradas
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0); // Para teclado
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [focusedIngredientIndex, setFocusedIngredientIndex] = useState(-1); // Qué input de ingrediente tiene foco
+
+  // Refs para manejar clics fuera
+  const suggestionsRef = useRef();
+
+
+   // Cargar categorías e ingredientes únicos al montar
+   useEffect(() => {
+    let isMounted = true; // Flag para evitar setear estado si se desmonta
+
+    const fetchData = async () => {
       try {
         setLoadingCategories(true);
-        const response = await getAllCategories();
-        setCategories(response.data || []);
         setError(null);
-        // Si no estamos editando y hay categorías, selecciona la primera por defecto
-        if (!isEditMode && response.data?.length > 0) {
-            setCategoryId(response.data[0].id);
+        const [catResponse, ingResponse] = await Promise.all([
+          getAllCategories(),
+          getUniqueIngredients() // Llama al nuevo endpoint
+        ]);
+
+        if (isMounted) {
+          setCategories(catResponse.data || []);
+          setAllIngredientNames(ingResponse.data || []); // Guarda los nombres únicos
+
+          if (!isEditMode && catResponse.data?.length > 0) {
+            setCategoryId(catResponse.data[0].id);
+          }
         }
       } catch (err) {
-        console.error("Error fetching categories:", err);
-        setError('No se pudieron cargar las categorías. Inténtalo de nuevo.');
-        setCategories([]);
+        console.error("Error fetching form data:", err);
+         if (isMounted) {
+            setError('No se pudieron cargar datos necesarios (categorías/ingredientes). Inténtalo de nuevo.');
+            setCategories([]);
+            setAllIngredientNames([]);
+         }
       } finally {
-        setLoadingCategories(false);
+         if (isMounted) setLoadingCategories(false);
       }
     };
-    fetchCategories();
-  }, [isEditMode]); // Solo se ejecuta al montar o si cambia isEditMode
 
-  // Rellenar el formulario si recibimos initialData (modo edición)
+    fetchData();
+
+    // Función cleanup
+    return () => {
+      isMounted = false;
+    };
+  }, [isEditMode]); // Dependencia isEditMode para resetear categoría seleccionada
+
+
+  // Efecto para rellenar datos en modo edición (igual que antes)
   useEffect(() => {
     if (initialData) {
-      setTitle(initialData.title || '');
-      setDescription(initialData.description || '');
-      setIngredients(initialData.ingredients || [{ ...emptyIngredient }]);
+      // ... (rellenar title, description, etc.) ...
+      setIngredients(initialData.ingredients?.map(ing => ({ // Asegura estructura completa
+          amount: ing.amount || '',
+          unit: ing.unit || '',
+          name: ing.name || ''
+      })) || [{ ...emptyIngredient }]);
       setSteps(initialData.steps || ['']);
-      setPreparationTime(initialData.preparationTime || '');
-      setCookingTime(initialData.cookingTime || '');
-      setServings(initialData.servings || '');
-      setCategoryId(initialData.categoryId || '');
-      setImageUrl(initialData.imageUrl || '');
+       // ... (rellenar categoryId, imageUrl, etc.) ...
+    } else {
+        // Resetea si no hay initialData (ej: al pasar de edit a add)
+         setIngredients([{ ...emptyIngredient }]);
+         // ... (resetear otros campos si es necesario) ...
     }
-  }, [initialData]); // Se ejecuta cuando initialData cambia
+  }, [initialData]);
 
-  // --- Manejadores de Ingredientes ---
+  // --- Click Listener para cerrar sugerencias ---
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+          if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
+              setShowSuggestions(false);
+          }
+      };
+      // Añadir listener si las sugerencias están visibles
+      if (showSuggestions) {
+          document.addEventListener('mousedown', handleClickOutside);
+      } else {
+          document.removeEventListener('mousedown', handleClickOutside);
+      }
+      // Cleanup listener
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+      };
+  }, [showSuggestions]); // Solo se ejecuta cuando showSuggestions cambia
+
+
+  // --- Manejadores de Ingredientes (ACTUALIZADO) ---
   const handleIngredientChange = (index, field, value) => {
     const newIngredients = [...ingredients];
     newIngredients[index][field] = value;
     setIngredients(newIngredients);
+
+    // Lógica de sugerencias SOLO para el campo 'name'
+    if (field === 'name') {
+      if (value.trim().length > 0) {
+        const filteredSuggestions = allIngredientNames.filter(
+          name => name.toLowerCase().includes(value.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
+        // Muestra sugerencias solo si hay coincidencias y el input actual tiene foco
+        setShowSuggestions(filteredSuggestions.length > 0 && index === focusedIngredientIndex);
+        setActiveSuggestionIndex(0); // Resetea índice activo
+      } else {
+        setSuggestions([]); // Limpia sugerencias si el input está vacío
+        setShowSuggestions(false);
+      }
+    }
   };
+
 
   const addIngredient = () => {
     setIngredients([...ingredients, { ...emptyIngredient }]);
@@ -74,6 +164,64 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
   };
+
+ // --- Manejadores de foco y selección de sugerencias ---
+ const handleIngredientFocus = (index) => {
+  setFocusedIngredientIndex(index);
+  // Podríamos re-mostrar sugerencias si el campo ya tiene texto
+   const currentValue = ingredients[index]?.name || '';
+   if (currentValue.trim().length > 0 && suggestions.length > 0) {
+       setShowSuggestions(true);
+   }
+};
+
+const handleIngredientBlur = () => {
+  // NO ocultar inmediatamente, esperar a ver si se hizo clic en sugerencia
+  // Lo manejaremos con el listener de click outside
+  // setFocusedIngredientIndex(-1);
+   // setTimeout(() => setShowSuggestions(false), 150); // Alternativa si listener falla
+};
+
+const handleSuggestionClick = (suggestion) => {
+  if (focusedIngredientIndex === -1) return; // Seguridad
+
+  const newIngredients = [...ingredients];
+  newIngredients[focusedIngredientIndex].name = suggestion;
+  setIngredients(newIngredients);
+
+  // Limpia y oculta sugerencias
+  setSuggestions([]);
+  setShowSuggestions(false);
+  setFocusedIngredientIndex(-1); // Quita el foco trackeado
+};
+
+// --- Manejo de teclado para sugerencias ---
+const handleKeyDown = (e) => {
+  // Solo actuar si las sugerencias están visibles
+  if (!showSuggestions || suggestions.length === 0) return;
+
+  switch (e.key) {
+      case 'Enter':
+          e.preventDefault(); // Evita submit del form
+          if (suggestions[activeSuggestionIndex]) {
+              handleSuggestionClick(suggestions[activeSuggestionIndex]);
+          }
+          break;
+      case 'ArrowUp':
+          e.preventDefault();
+          setActiveSuggestionIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1));
+          break;
+      case 'ArrowDown':
+          e.preventDefault();
+          setActiveSuggestionIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : 0));
+          break;
+      case 'Escape':
+          setShowSuggestions(false);
+          break;
+      default:
+          break;
+  }
+};
 
   // --- Manejadores de Pasos ---
   const handleStepChange = (index, value) => {
@@ -94,7 +242,8 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
 
   // --- Manejador de Envío ---
   const handleSubmit = (e) => {
-    e.preventDefault();
+    setError(null); // Limpiar errores previos
+    setIsLoading(true); // Indicar que el envío está en progreso
     setError(null); // Limpiar errores previos
 
     // Validación básica (se puede mejorar)
@@ -122,13 +271,14 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
       categoryId: parseInt(categoryId, 10), // Asegurarse que es número
       imageUrl: imageUrl.trim() || null, // Si está vacío, mandar null
     };
-
+    onSubmit(recipeData);
+    setIsLoading(false); // Restablecer el estado de carga después del envío
     // Llama a la función onSubmit pasada desde el componente padre
     onSubmit(recipeData);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="recipe-form">
+    <form onSubmit={handleSubmit} className="recipe-form" autoComplete="off">
       <h2>{isEditMode ? 'Editar Receta' : 'Añadir Nueva Receta'}</h2>
 
       {error && <p className="form-error">{error}</p>}
@@ -177,44 +327,73 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
         )}
       </div>
 
-       {/* --- Sección Ingredientes --- */}
+       {/* --- Sección Ingredientes (ACTUALIZADA) --- */}
        <fieldset className="form-section">
-          <legend>Ingredientes *</legend>
-          {ingredients.map((ingredient, index) => (
-              <div key={index} className="ingredient-item">
-                  <input
-                      type="text"
-                      placeholder="Cantidad (ej: 100)"
-                      value={ingredient.amount}
-                      onChange={(e) => handleIngredientChange(index, 'amount', e.target.value)}
-                      className="input-amount"
-                  />
-                  <input
-                      type="text"
-                      placeholder="Unidad (ej: gr, ml, taza)"
-                      value={ingredient.unit}
-                      onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
-                      className="input-unit"
-                  />
-                  <input
-                      type="text"
-                      placeholder="Nombre del Ingrediente *"
-                      value={ingredient.name}
-                      onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
-                      required // Solo el nombre es estrictamente requerido aquí
-                      className="input-name"
-                  />
+        <legend>Ingredientes *</legend>
+        {ingredients.map((ingredient, index) => (
+          <div key={index} className="ingredient-item">
+            {/* Campo Cantidad (igual) */}
+            <input
+              type="text"
+              placeholder="Cantidad"
+              value={ingredient.amount}
+              onChange={(e) => handleIngredientChange(index, 'amount', e.target.value)}
+              className="input-amount"
+            />
+            {/* Campo Unidad (NUEVO: Desplegable) */}
+             <select
+                value={ingredient.unit}
+                onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
+                className="input-unit" // Usa la misma clase o una nueva
+            >
+                {COMMON_UNITS.map((unitOption) => (
+                    <option key={unitOption} value={unitOption}>
+                        {unitOption || 'Unidad'} {/* Muestra 'Unidad' si está vacío */}
+                    </option>
+                ))}
+            </select>
+
+            {/* Campo Nombre (ACTUALIZADO con sugerencias) */}
+            <div className="ingredient-name-wrapper"> {/* Wrapper para posicionar sugerencias */}
+              <input
+                type="text"
+                placeholder="Nombre del Ingrediente *"
+                value={ingredient.name}
+                onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+                onFocus={() => handleIngredientFocus(index)} // Track focus
+                onBlur={handleIngredientBlur} // Ojo con este
+                onKeyDown={handleKeyDown} // Manejo de teclado
+                required
+                className="input-name"
+              />
+              {/* Lista de Sugerencias */}
+              {showSuggestions && focusedIngredientIndex === index && suggestions.length > 0 && (
+                <ul className="suggestions-list" ref={suggestionsRef}>
+                  {suggestions.map((suggestion, idx) => (
+                    <li
+                      key={suggestion}
+                      className={`suggestion-item ${idx === activeSuggestionIndex ? 'active' : ''}`}
+                      // Usar mousedown previene que el blur del input cierre la lista antes del click
+                      onMouseDown={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
                   <button
                       type="button"
                       onClick={() => removeIngredient(index)}
                       disabled={ingredients.length <= 1}
-                      className="button-remove"
+                      className="button-remove button"
                   >
                       × {/* Símbolo de multiplicar como 'x' */}
                   </button>
               </div>
           ))}
-          <button type="button" onClick={addIngredient} className="button-add">
+          <button type="button" onClick={addIngredient} className="button-add button button-default">
               + Añadir Ingrediente
           </button>
       </fieldset>
@@ -295,9 +474,15 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
         </div>
       </fieldset>
 
-      <button type="submit" className="button-submit">
-        {isEditMode ? 'Guardar Cambios' : 'Crear Receta'}
-      </button>
+      <button
+          type="submit"
+          className="button-submit button button-primary" // Aplicar estilo botón
+          disabled={isLoading || loadingCategories} // Deshabilitar mientras carga
+        >
+          {isLoading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Receta')}
+       </button>
+       {/* Mover indicador de carga/error aquí si se aplica al submit */}
+        {error && !loadingCategories && <p className="form-error" style={{marginTop: '15px'}}>{error}</p>}
     </form>
   );
 }

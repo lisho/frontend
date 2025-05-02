@@ -1,32 +1,34 @@
 /* src/components/RecipeCard.css */
 .recipe-card-link {
-    text-decoration: none; /* Quitar subrayado del enlace */
-    color: inherit; /* Heredar color del texto */
-    display: block; /* Para que ocupe su espacio en la cuadrícula */
-    height: 100%; /* Para que todas las tarjetas tengan la misma altura si están en una cuadrícula */
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
   }
   
   .recipe-card {
-    background-color: #fff;
+    background-color: var(--color-surface); /* Blanco */
     border-radius: var(--border-radius-medium);
     box-shadow: var(--box-shadow-light);
-    overflow: hidden; /* Para que la imagen no se salga */
+    overflow: hidden;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Ocupar toda la altura del enlace */
+    height: 100%;
+    border: 1px solid var(--color-border); /* Borde sutil */
   }
   
   .recipe-card:hover {
-    transform: translateY(-5px); /* Efecto levantar */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-hover);
   }
   
   .recipe-card-image-container {
-    position: relative; /* Para posicionar la categoría encima */
+    position: relative;
     width: 100%;
-    padding-top: 66.66%; /* Aspect ratio 3:2 (200 / 300 * 100) */
-    overflow: hidden; /* Asegurar que la imagen no desborde */
+    padding-top: 60%; /* Ajustar aspect ratio si es necesario (ej: 16:9 ~ 56.25%) */
+    overflow: hidden;
+    background-color: #eee; /* Color de fondo mientras carga la imagen */
   }
   
   .recipe-card-image {
@@ -35,67 +37,58 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cubrir el espacio sin deformar */
-    transition: transform 0.3s ease; /* Suave zoom al pasar el ratón */
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
   .recipe-card:hover .recipe-card-image {
-      transform: scale(1.05); /* Ligero zoom */
+      transform: scale(1.03); /* Zoom muy sutil */
   }
-  
   
   .recipe-card-category {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(248, 205, 218, 0.9); /* Rosa pastel con transparencia */
-    color: var(--color-text);
-    padding: 4px 10px;
+    bottom: 10px; /* Abajo en vez de arriba */
+    left: 10px;
+    background-color: rgba(44, 62, 80, 0.85); /* Fondo azul oscuro translúcido */
+    color: var(--color-surface); /* Texto blanco */
+    padding: 5px 12px;
     border-radius: var(--border-radius-small);
-    font-size: 0.8em;
-    font-weight: bold;
+    font-size: 0.75em; /* Más pequeño */
+    font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.5px; /* Espaciado entre letras */
   }
   
   .recipe-card-content {
-    padding: 15px;
-    flex-grow: 1; /* Hace que este div ocupe el espacio restante */
+    padding: 20px; /* Más padding */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
   }
   
   .recipe-card-title {
     margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.3em;
-    color: var(--color-primary); /* Título en rosa */
-    /* Limitar a 2 líneas con elipsis */
+    margin-bottom: 12px;
+    font-size: 1.25em; /* Ligeramente más grande */
+    font-weight: 600;
+    color: var(--color-primary); /* Azul oscuro */
+    line-height: 1.3;
+     /* Limitar a 2 líneas con elipsis */
      overflow: hidden;
      display: -webkit-box;
      -webkit-line-clamp: 2;
      -webkit-box-orient: vertical;
-     min-height: 2.6em; /* Altura mínima para 2 líneas (aprox) */
-  
+     min-height: 2.6em; /* Ajustar si es necesario */
   }
-  
-  .recipe-card-description {
-      font-size: 0.9em;
-      color: var(--color-text-light);
-      margin-bottom: 15px;
-      /* Limitar a 3 líneas */
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      flex-grow: 1; /* Ocupa espacio si no hay meta */
-  }
-  
   
   .recipe-card-meta {
-      font-size: 0.8em;
-      color: var(--color-secondary); /* Azul bebé */
-      display: flex;
-      gap: 15px;
-      margin-top: auto; /* Empuja esto al fondo de la tarjeta */
-      padding-top: 10px; /* Espacio sobre los metas */
-      border-top: 1px solid var(--color-border); /* Separador sutil */
+    font-size: 0.85em; /* Un poco más grande */
+    color: var(--color-text-light); /* Gris claro */
+    display: flex;
+    gap: 15px;
+    margin-top: auto; /* Empuja al fondo */
+    padding-top: 15px;
+    border-top: 1px solid var(--color-border);
+  }
+  .recipe-card-meta span {
+      /* Iconos podrían ir bien aquí */
   }

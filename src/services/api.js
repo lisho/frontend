@@ -45,6 +45,10 @@ export const getAllCategories = () => {
   return apiClient.get('/categories');
 };
 
+export const getUniqueIngredients = () => {
+  return apiClient.get('/ingredients/unique');
+};
+
 // Exporta un objeto con todas las funciones o expórtalas individualmente
 // export default {
 //   getAllRecipes,

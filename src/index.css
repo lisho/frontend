@@ -1,20 +1,24 @@
 /* src/index.css */
 :root {
-  /* Paleta Pastel Suave - ¡Ajusta estos colores a tu gusto! */
-  --color-primary: #f8cdda; /* Rosa pastel */
-  --color-secondary: #a2d2ff; /* Azul bebé */
-  --color-accent: #fffbcc; /* Amarillo pálido */
-  --color-background: #fefefa; /* Blanco muy suave */
-  --color-text: #4a4a4a; /* Gris oscuro suave */
-  --color-text-light: #7a7a7a; /* Gris más claro */
-  --color-border: #e0e0e0; /* Gris muy claro para bordes */
+  /* Paleta Moderna/Masculina - Azul Marino, Grises, Blanco */
+  --color-primary: #2c3e50; /* Midnight Blue (Azul oscuro/grisáceo) - Principal */
+  --color-secondary: #3498db; /* Peter River (Azul brillante limpio) - Acentos, Enlaces */
+  --color-accent: #e74c3c; /* Alizarin (Rojo fuerte) - Para acciones como borrar */
+  --color-background: #ecf0f1; /* Clouds (Gris muy claro) - Fondo general */
+  --color-surface: #ffffff; /* White - Fondo de tarjetas, formularios */
+  --color-text: #34495e; /* Wet Asphalt (Gris oscuro azulado) - Texto principal */
+  --color-text-light: #7f8c8d; /* Grayish - Texto secundario, meta info */
+  --color-border: #bdc3c7; /* Silver (Gris claro) - Bordes, separadores */
 
-  --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --font-family-serif: Georgia, 'Times New Roman', Times, serif; /* Para títulos quizás? */
+  /* Tipografía - Usaremos fuentes del sistema para modernidad y rendimiento */
+  --font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-family-serif: var(--font-family-sans); /* Mantenemos sans-serif para un look moderno */
 
-  --border-radius-small: 4px;
-  --border-radius-medium: 8px;
-  --box-shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --border-radius-small: 3px; /* Bordes menos redondeados */
+  --border-radius-medium: 5px;
+  /* Sombra más sutil y moderna */
+  --box-shadow-light: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --box-shadow-hover: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
 body {
@@ -25,25 +29,93 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   line-height: 1.6;
+  font-size: 16px; /* Ligeramente más grande */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background-color: #f4f4f4;
+  padding: 2px 4px;
+  border-radius: var(--border-radius-small);
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-secondary); /* Azul brillante para enlaces */
   text-decoration: none;
   transition: color 0.2s ease-in-out;
 }
 
 a:hover {
-  color: var(--color-secondary);
+  color: #2980b9; /* Azul un poco más oscuro al pasar el ratón */
 }
 
 h1, h2, h3, h4, h5, h6 {
-  /* font-family: var(--font-family-serif); */ /* Descomenta si quieres títulos serif */
-  color: var(--color-primary); /* Títulos en rosa */
+  font-family: var(--font-family-sans); /* Todo sans-serif */
+  color: var(--color-primary); /* Azul oscuro para títulos */
   margin-top: 1.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.6em;
+  font-weight: 600; /* Un poco más de peso */
+}
+
+/* Estilo base botones */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius-medium);
+    font-family: var(--font-family-sans);
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--box-shadow-hover);
+}
+.button:active {
+    transform: translateY(0px);
+    box-shadow: var(--box-shadow-light);
+}
+
+/* Botón Primario (ej: submit) */
+.button-primary {
+    background-color: var(--color-primary); /* Azul oscuro */
+    color: var(--color-surface);
+}
+.button-primary:hover {
+    background-color: #34495e; /* Gris oscuro */
+}
+
+/* Botón Secundario (ej: añadir, editar) */
+.button-secondary {
+    background-color: var(--color-secondary); /* Azul brillante */
+    color: var(--color-surface);
+}
+.button-secondary:hover {
+    background-color: #2980b9;
+}
+
+/* Botón Peligro (ej: eliminar) */
+.button-danger {
+    background-color: var(--color-accent); /* Rojo */
+    color: var(--color-surface);
+}
+.button-danger:hover {
+    background-color: #c0392b; /* Rojo más oscuro */
+}
+
+/* Botón Neutro/Default */
+.button-default {
+    background-color: var(--color-surface); /* Blanco */
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+}
+.button-default:hover {
+    background-color: #f8f9f9;
+     box-shadow: none;
 }

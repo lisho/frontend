@@ -1,42 +1,43 @@
 /* src/pages/HomePage.css */
 .home-title {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2em;
-    color: var(--color-secondary); /* Título en azul bebé */
-  }
-  
+  text-align: center;
+  margin-bottom: 40px; /* Más espacio */
+  font-size: 2.2em; /* Más grande */
+  font-weight: 700;
+  color: var(--color-primary); /* Azul oscuro */
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Tarjetas un poco más anchas */
+  gap: 30px; /* Más espacio */
+}
+
+/* Mensajes de estado */
+.status-message {
+  text-align: center;
+  font-size: 1.1em; /* Ligeramente más pequeño */
+  color: var(--color-text-light);
+  margin-top: 50px;
+  padding: 30px;
+  background-color: var(--color-surface); /* Fondo blanco */
+  border-radius: var(--border-radius-medium);
+  border: 1px dashed var(--color-border);
+}
+
+.status-message.error {
+    color: var(--color-accent);
+    background-color: #fbeae8;
+    border: 1px solid var(--color-accent);
+    border-style: solid; /* Borde sólido para error */
+}
+
+@media (max-width: 600px) {
   .recipe-grid {
-    display: grid;
-    /* Crea columnas automáticas que tengan al menos 280px de ancho */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px; /* Espacio entre tarjetas */
+    grid-template-columns: 1fr; /* Una columna en móvil */
+    gap: 20px;
   }
-  
-  /* Mensajes de estado (carga, error, vacío) */
-  .status-message {
-    text-align: center;
-    font-size: 1.2em;
-    color: var(--color-text-light);
-    margin-top: 40px;
-    padding: 20px;
-    background-color: var(--color-background); /* Fondo suave */
-    border-radius: var(--border-radius-medium);
-    border: 1px dashed var(--color-border);
+  .home-title {
+      font-size: 1.8em;
   }
-  
-  .status-message.error {
-    color: #d8000c; /* Rojo oscuro */
-    background-color: #ffdddd; /* Fondo rojo claro */
-    border: 1px solid #d8000c;
-  }
-  
-  /* Media query para ajustar el gap en pantallas más pequeñas si es necesario */
-  @media (max-width: 600px) {
-    .recipe-grid {
-      gap: 15px;
-    }
-    .home-title {
-        font-size: 1.6em;
-    }
-  }
+}
