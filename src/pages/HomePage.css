@@ -1,0 +1,42 @@
+/* src/pages/HomePage.css */
+.home-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: var(--color-secondary); /* Título en azul bebé */
+  }
+  
+  .recipe-grid {
+    display: grid;
+    /* Crea columnas automáticas que tengan al menos 280px de ancho */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px; /* Espacio entre tarjetas */
+  }
+  
+  /* Mensajes de estado (carga, error, vacío) */
+  .status-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: var(--color-text-light);
+    margin-top: 40px;
+    padding: 20px;
+    background-color: var(--color-background); /* Fondo suave */
+    border-radius: var(--border-radius-medium);
+    border: 1px dashed var(--color-border);
+  }
+  
+  .status-message.error {
+    color: #d8000c; /* Rojo oscuro */
+    background-color: #ffdddd; /* Fondo rojo claro */
+    border: 1px solid #d8000c;
+  }
+  
+  /* Media query para ajustar el gap en pantallas más pequeñas si es necesario */
+  @media (max-width: 600px) {
+    .recipe-grid {
+      gap: 15px;
+    }
+    .home-title {
+        font-size: 1.6em;
+    }
+  }
