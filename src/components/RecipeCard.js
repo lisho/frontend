@@ -14,9 +14,17 @@ function RecipeCard({ recipe }) {
 
   // Prepara los datos a mostrar
   const imageUrl = recipe.imageUrl || PLACEHOLDER_IMAGE;
-  const categoryName = recipe.category?.name || 'Sin categoría'; // Acceso seguro a category.name
+  const categoryId = recipe.category?.id;
+  const categoryName = recipe.category?.name || 'Sin categoría';
   const recipeUrl = `/recipe/${recipe.id}`;
+  const categoryUrl = categoryId ? `/category/${categoryId}` : '#';
 
+  const handleCategoryClick = (e) => {
+    // Previene que el click "suba" al enlace padre de la tarjeta
+    e.stopPropagation();
+    // La navegación la manejará el componente Link automáticamente
+    console.log(`Navegando a categoría: ${categoryId}`);
+  };  
   return (
     <Link to={recipeUrl} className="recipe-card-link">
       <div className="recipe-card">
@@ -30,8 +38,21 @@ function RecipeCard({ recipe }) {
                 e.target.src = PLACEHOLDER_IMAGE;
              }}
           />
-          <span className="recipe-card-category">{categoryName}</span>
-        </div>
+          {categoryId ? (
+                <Link
+                    to={categoryUrl}
+                    className="recipe-card-category"
+                    onClick={handleCategoryClick} // Detener propagación
+                >
+                    {categoryName}
+                </Link>
+            ) : (
+                // Mostrar como texto simple si no hay ID
+                <span className="recipe-card-category no-link">
+                    {categoryName}
+                </span>
+            )}        
+          </div>
         <div className="recipe-card-content">
           <h3 className="recipe-card-title">{recipe.title || 'Receta sin título'}</h3>
           {/* Podríamos añadir una descripción corta si la tuviéramos */}

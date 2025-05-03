@@ -84,19 +84,32 @@ function RecipeDetailPage() {
     </ol>
   );
 
+  // Preparar datos de categoría para el enlace
+  const categoryId = recipe.category?.id;
+  const categoryName = recipe.category?.name || 'Sin especificar';
+  const categoryUrl = categoryId ? `/category/${categoryId}` : '#';
+
   return (
     <div className="recipe-detail">
       {/* Botones de Acción */}
       <div className="recipe-actions">
-          <Link to={`/edit-recipe/${recipe.id}`} className="button button-edit">
+          <Link to={`/edit-recipe/${recipe.id}`} className="button button-secondary">
               Editar
           </Link>
-          <button onClick={handleDelete} className="button button-delete">
+          <button onClick={handleDelete} className="button button-danger">
               Eliminar
           </button>
       </div>
 
       <h2 className="recipe-title">{recipe.title}</h2>
+
+    {/* --- ENLACE DE CATEGORÍA --- */}
+    {categoryId ? (
+              <Link to={categoryUrl} className="recipe-category-name">{categoryName}</Link>
+        ) : (
+              <span className="recipe-category-name no-link">{categoryName}</span>
+        )}
+        {/* --- FIN ENLACE CATEGORÍA --- */}
 
       {recipe.imageUrl && (
         <img src={recipe.imageUrl} alt={recipe.title} className="recipe-image" />

@@ -10,6 +10,8 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import AddEditRecipePage from './pages/AddEditRecipePage';
+import ManageDataPage from './pages/ManageDataPage'; 
+import CategoryPage from './pages/CategoryPage'; // <-- Importar
 
 // Importa los estilos globales restantes de App (si los hay)
 import './App.css';
@@ -48,6 +50,10 @@ function AppContent() {
                     <Route path="/recipe/:id" element={<RecipeDetailPage />} />
                     <Route path="/add-recipe" element={<AddEditRecipePage />} />
                     <Route path="/edit-recipe/:id" element={<AddEditRecipePage />} />
+                    <Route path="*" element={<h2>Página no encontrada (404)</h2>} />
+                    <Route path="/manage-data" element={<ManageDataPage />} /> {/* <-- Nueva Ruta */}
+                    <Route path="*" element={<h2>Página no encontrada (404)</h2>} />
+                    <Route path="/category/:categoryId" element={<CategoryPage />} />
                     <Route path="*" element={<h2>Página no encontrada (404)</h2>} />
                 </Routes>
             </main>

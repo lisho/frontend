@@ -151,3 +151,37 @@
     text-align: center;
     margin: 20px 0;
 }
+
+
+.recipe-category-name {
+  display: inline-block; /* O block si prefieres que ocupe toda la línea */
+  margin-bottom: 25px; /* Espacio debajo */
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--color-secondary); /* Azul brillante */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none; /* Quitar subrayado por defecto */
+  border-bottom: 1px dashed var(--color-secondary); /* Subrayado punteado */
+  transition: color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.recipe-category-name:hover {
+  color: var(--color-primary); /* Azul oscuro al pasar */
+  border-bottom-color: var(--color-primary);
+  border-bottom-style: solid; /* Subrayado sólido al pasar */
+}
+
+/* Estilo si no es un enlace */
+.recipe-category-name.no-link {
+  cursor: default;
+  border-bottom: none;
+  color: var(--color-text-light); /* Un color más tenue quizás */
+}
+
+/* Ajuste en recipe-meta si quitaste la categoría */
+.recipe-meta {
+ /* ... (asegúrate de que el layout se vea bien sin el item de categoría) ... */
+ justify-content: flex-start; /* O 'center' si prefieres */
+}

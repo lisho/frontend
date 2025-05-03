@@ -1,0 +1,88 @@
+/* src/components/Manager.css */
+.manager-container {
+    background-color: var(--color-surface);
+    padding: 20px;
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--color-border);
+    margin-top: 15px;
+  }
+  
+  .manager-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  
+  .manager-form input[type="text"] {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-small);
+    font-size: 1em;
+  }
+  .manager-form input[type="text"]:focus {
+      outline: none;
+      border-color: var(--color-secondary);
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  }
+  
+  
+  .manager-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .manager-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .manager-item:last-child {
+    border-bottom: none;
+  }
+  
+  .manager-item .item-name {
+    font-weight: 500;
+  }
+  
+  .manager-item .item-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0; /* Evita que los botones se achiquen */
+  }
+  
+  .manager-item.editing {
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: var(--border-radius-small);
+      border-bottom: none; /* Quitar borde inferior al editar */
+      margin-bottom: 5px; /* Espacio si se quita el borde */
+  }
+  
+  /* Ajustes para el formulario de edición inline */
+  .manager-item.editing .manager-form.edit-form {
+      width: 100%;
+      margin-bottom: 0; /* Sin margen inferior */
+      align-items: center;
+  }
+  .manager-item.editing .manager-form.edit-form input {
+      /* Puede necesitar ajustes */
+  }
+  .manager-item.editing .item-actions {
+      /* Puede necesitar ajustes */
+  }
+  
+  /* Error message (puede estar en index.css o App.css también) */
+  .error-message {
+      color: var(--color-accent);
+      background-color: #fbeae8;
+      border: 1px solid var(--color-accent);
+      padding: 10px 15px;
+      border-radius: var(--border-radius-small);
+      margin-bottom: 15px;
+      font-size: 0.9em;
+  }

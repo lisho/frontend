@@ -1,0 +1,10 @@
+/* src/pages/CategoryPage.css */
+.category-page-title {
+    text-align: center;
+    margin-bottom: 30px; /* Igual que home-title? */
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--color-primary); /* O usar --color-secondary? */
+  }
+  
+  /* Puedes añadir más estilos específicos aquí si es necesario */

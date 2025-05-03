@@ -92,3 +92,23 @@
   .recipe-card-meta span {
       /* Iconos podrían ir bien aquí */
   }
+
+  .recipe-card-category {
+    /* ... (estilos existentes: position, background, color, padding, etc.) ... */
+    transition: background-color 0.2s ease, color 0.2s ease; /* Añadir transición */
+    text-decoration: none; /* Asegurar que no haya subrayado por defecto */
+    cursor: pointer; /* Indicar que es clickeable */
+  }
+  
+  /* Estilo Hover para el enlace de categoría */
+  .recipe-card-category:hover {
+    background-color: rgba(52, 152, 219, 0.9); /* Fondo azul brillante (ajusta el color) */
+    color: var(--color-surface);
+  }
+  
+  /* Estilo para la categoría cuando NO es un enlace */
+  .recipe-card-category.no-link {
+      cursor: default; /* Cursor normal */
+      /* Podrías darle un aspecto ligeramente diferente si quieres */
+      /* opacity: 0.8; */
+  }

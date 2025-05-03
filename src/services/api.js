@@ -39,10 +39,32 @@ export const deleteRecipe = (id) => {
   return apiClient.delete(`/recipes/${id}`);
 };
 
-// --- Funciones para Categorías ---
-
+// --- Funciones CRUD para Categorías ---
 export const getAllCategories = () => {
   return apiClient.get('/categories');
+};
+export const createCategory = (categoryData) => {
+  return apiClient.post('/categories', categoryData); // { name: "Nueva Cat" }
+};
+export const updateCategory = (id, categoryData) => {
+  return apiClient.put(`/categories/${id}`, categoryData); // { name: "Nuevo Nombre" }
+};
+export const deleteCategory = (id) => {
+  return apiClient.delete(`/categories/${id}`);
+};
+
+// --- Funciones CRUD para Unidades ---
+export const getAllUnits = () => { // Nueva función para obtener todas las unidades
+    return apiClient.get('/units');
+};
+export const createUnit = (unitData) => {
+    return apiClient.post('/units', unitData); // { name: "Nueva Unidad" }
+};
+export const updateUnit = (id, unitData) => {
+    return apiClient.put(`/units/${id}`, unitData); // { name: "Nuevo Nombre" }
+};
+export const deleteUnit = (id) => {
+    return apiClient.delete(`/units/${id}`);
 };
 
 export const getUniqueIngredients = () => {

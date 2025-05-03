@@ -1,28 +1,10 @@
 // src/components/RecipeForm.js
 import React, { useState, useEffect, useRef } from 'react';
-import { getAllCategories, getUniqueIngredients } from '../services/api'; // Necesitamos las categorías
+import { getAllCategories, getUniqueIngredients, getAllUnits } from '../services/api'; // Necesitamos las categorías
 import './RecipeForm.css'; // Crearemos este archivo para estilos
 
 // Estado inicial para un ingrediente vacío
 const emptyIngredient = { amount: '', unit: '', name: '' };
-
-// Define las unidades comunes fuera del componente
-const COMMON_UNITS = [
-  '', // Opción vacía/default
-  'gr', 'kg', 'mg',
-  'ml', 'cl', 'l',
-  'cucharadita', 'cdta', // teaspoon
-  'cucharada', 'cda',   // tablespoon
-  'taza(s)',
-  'pizca(s)',
-  'diente(s)',
-  'unidad(es)', 'ud(s)',
-  'lata(s)',
-  'paquete(s)',
-  'al gusto',
-  // ... añade más unidades relevantes para ti
-];
-
 
 
 function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
@@ -47,96 +29,93 @@ function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [focusedIngredientIndex, setFocusedIngredientIndex] = useState(-1); // Qué input de ingrediente tiene foco
 
+  const [units, setUnits] = useState([]); // Estado para unidades de medida
+  const [loadingFormData, setLoadingFormData] = useState(true);
   // Refs para manejar clics fuera
   const suggestionsRef = useRef();
 
 
-   // Cargar categorías e ingredientes únicos al montar
-   useEffect(() => {
-    let isMounted = true; // Flag para evitar setear estado si se desmonta
+     // Cargar categorías, ingredientes únicos Y unidades
+     useEffect(() => {
+      let isMounted = true;
+      const fetchData = async () => {
+          setLoadingFormData(true); // Inicia carga
+          setError(null);
+          try {
+              const [catResponse, ingResponse, unitResponse] = await Promise.all([
+                  getAllCategories(),
+                  getUniqueIngredients(),
+                  getAllUnits() // <-- Llamada API para unidades
+              ]);
 
-    const fetchData = async () => {
-      try {
-        setLoadingCategories(true);
-        setError(null);
-        const [catResponse, ingResponse] = await Promise.all([
-          getAllCategories(),
-          getUniqueIngredients() // Llama al nuevo endpoint
-        ]);
+              if (isMounted) {
+                  setCategories(catResponse.data || []);
+                  setAllIngredientNames(ingResponse.data || []);
+                  setUnits(unitResponse.data || []); // <-- Guarda unidades en estado
 
-        if (isMounted) {
-          setCategories(catResponse.data || []);
-          setAllIngredientNames(ingResponse.data || []); // Guarda los nombres únicos
+                  // Lógica para seleccionar primera categoría (sin cambios)
+                  if (!isEditMode && catResponse.data?.length > 0) {
+                     // setCategoryId(catResponse.data[0].id); // ¿Resetear o mantener?
+                  }
+                  // Lógica para rellenar con initialData (si se hace aquí)
+                  if (isEditMode && initialData) {
+                       // ... setear title, desc, etc ...
+                       setCategoryId(initialData.categoryId || ''); // Asegurar que setea categoría
+                       // ... setear ingredientes, pasos, etc ...
+                  } else if (!isEditMode) {
+                       // ... resetear campos si es necesario ...
+                       // ¿Resetear categoryId aquí o dejar la primera?
+                       setCategoryId(''); // Resetearla aquí parece más consistente
+                  }
 
-          if (!isEditMode && catResponse.data?.length > 0) {
-            setCategoryId(catResponse.data[0].id);
+              }
+          } catch (err) {
+              console.error("Error fetching form data:", err);
+              if (isMounted) {
+                  setError('No se pudieron cargar datos necesarios. Inténtalo de nuevo.');
+                  setCategories([]);
+                  setAllIngredientNames([]);
+                  setUnits([]); // Limpiar unidades también
+              }
+          } finally {
+              if (isMounted) setLoadingFormData(false); // Finaliza carga
           }
-        }
-      } catch (err) {
-        console.error("Error fetching form data:", err);
-         if (isMounted) {
-            setError('No se pudieron cargar datos necesarios (categorías/ingredientes). Inténtalo de nuevo.');
-            setCategories([]);
-            setAllIngredientNames([]);
-         }
-      } finally {
-         if (isMounted) setLoadingCategories(false);
+      };
+
+      fetchData();
+      return () => { isMounted = false; };
+  // Dependencias: isEditMode para lógica de selección/reseteo.
+  // initialData para rellenar datos (si se hace aquí, aunque es mejor separado).
+  // Si la lógica de initialData está separada, la dependencia aquí sería solo [isEditMode]
+  }, [isEditMode, initialData]); // REVISAR DEPENDENCIAS si separas useEffect de initialData
+
+
+    // useEffect separado para initialData (RECOMENDADO)
+    useEffect(() => {
+      if (initialData) {
+          setTitle(initialData.title || '');
+          setDescription(initialData.description || '');
+          setPreparationTime(initialData.preparationTime || '');
+          setCookingTime(initialData.cookingTime || '');
+          setServings(initialData.servings || '');
+          setCategoryId(initialData.categoryId || '');
+          setImageUrl(initialData.imageUrl || '');
+           // La parte de ingredientes (esta debería estar funcionando según dices)
+          setIngredients(initialData.ingredients?.map(ing => ({
+              amount: ing.amount || '',
+              unit: ing.unit || '',
+              name: ing.name || ''
+          })) || [{ ...emptyIngredient }]);
+          setSteps(initialData.steps || ['']);
+      } else if (!isEditMode) { // Solo resetea si initialData es null Y NO estamos editando
+          setTitle('');
+          // ... resetear otros campos ...
+          setCategoryId(''); // Resetear categoría
+          setIngredients([{ ...emptyIngredient }]);
+          setSteps(['']);
+          setError(null);
       }
-    };
-
-    fetchData();
-
-    // Función cleanup
-    return () => {
-      isMounted = false;
-    };
-  }, [isEditMode]); // Dependencia isEditMode para resetear categoría seleccionada
-
-
-  useEffect(() => {
-    console.log("Effect for initialData triggered. initialData:", initialData); // <-- AÑADE ESTE LOG PARA DEPURAR
-    if (initialData) {
-      // --- ASEGÚRATE DE QUE TODAS ESTAS LÍNEAS ESTÉN PRESENTES ---
-      setTitle(initialData.title || '');
-      setDescription(initialData.description || '');
-      setPreparationTime(initialData.preparationTime || '');
-      setCookingTime(initialData.cookingTime || '');
-      setServings(initialData.servings || '');
-      setCategoryId(initialData.categoryId || ''); // Asegúrate de que 'categoryId' sea el nombre correcto
-      setImageUrl(initialData.imageUrl || '');
-      // --- FIN DE LAS LÍNEAS A VERIFICAR ---
-
-      // La parte de ingredientes (esta debería estar funcionando según dices)
-      setIngredients(initialData.ingredients?.map(ing => ({
-          amount: ing.amount || '',
-          unit: ing.unit || '',
-          name: ing.name || ''
-      })) || [{ ...emptyIngredient }]);
-
-      // La parte de pasos
-      setSteps(initialData.steps || ['']);
-
-    } else {
-      // --- LÓGICA DE RESETEO PARA MODO AÑADIR ---
-      // Asegúrate de que esto solo se ejecute cuando NO estás en modo edición
-      // o cuando initialData es explícitamente null.
-      console.log("Effect for initialData: Resetting fields for add mode."); // <-- AÑADE ESTE LOG
-      setTitle('');
-      setDescription('');
-      setPreparationTime('');
-      setCookingTime('');
-      setServings('');
-      // Decide si quieres resetear la categoría o dejar la primera seleccionada
-      // setCategoryId(categories[0]?.id || ''); // O dejarla vacía si es preferible
-      setCategoryId(''); // Resetearla puede ser más seguro
-      setImageUrl('');
-      setIngredients([{ ...emptyIngredient }]);
-      setSteps(['']);
-      setError(null); // Limpiar errores al cambiar de modo
-    }
-    // La dependencia DEBE ser [initialData] para que se ejecute cuando lleguen los datos
-    // Si añadiste 'categories' aquí, podría causar problemas.
-  }, [initialData]); // <-- VERIFICA LAS DEPENDENCIAS
+  }, [initialData, isEditMode]); // isEditMode aquí asegura reseteo al pasar de Edit a Add
 
   // --- Click Listener para cerrar sugerencias ---
   useEffect(() => {
@@ -332,26 +311,15 @@ const handleKeyDown = (e) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="category">Categoría *</label>
-        {loadingCategories ? (
-          <p>Cargando categorías...</p>
-        ) : categories.length > 0 ? (
-          <select
-            id="category"
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            required
-          >
-            <option value="" disabled>Selecciona una categoría</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        ) : (
-             <p>No hay categorías disponibles. Añade alguna primero.</p>
-        )}
+          <label htmlFor="category">Categoría *</label>
+          {loadingFormData ? ( // Usar nuevo estado de carga
+            <p>Cargando categorías...</p>
+          ) : categories.length > 0 ? (
+              <select id="category" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
+                  <option value="" disabled>Selecciona una categoría</option>
+                  {categories.map((cat) => ( <option key={cat.id} value={cat.id}>{cat.name}</option> ))}
+              </select>
+          ) : ( <p>No hay categorías disponibles.</p> )}
       </div>
 
        {/* --- Sección Ingredientes (ACTUALIZADA) --- */}
@@ -368,14 +336,16 @@ const handleKeyDown = (e) => {
               className="input-amount"
             />
             {/* Campo Unidad (NUEVO: Desplegable) */}
-             <select
-                value={ingredient.unit}
+            <select
+                value={ingredient.unit} // El valor sigue siendo el nombre de la unidad
                 onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
-                className="input-unit" // Usa la misma clase o una nueva
+                className="input-unit"
+                disabled={loadingFormData} // Deshabilitar mientras carga
             >
-                {COMMON_UNITS.map((unitOption) => (
-                    <option key={unitOption} value={unitOption}>
-                        {unitOption || 'Unidad'} {/* Muestra 'Unidad' si está vacío */}
+                <option value="">Unidad</option> {/* Opción vacía */}
+                {units.map((unitOption) => ( // Mapea sobre el estado 'units'
+                    <option key={unitOption.id} value={unitOption.name}>
+                        {unitOption.name}
                     </option>
                 ))}
             </select>
@@ -504,7 +474,7 @@ const handleKeyDown = (e) => {
       <button
           type="submit"
           className="button-submit button button-primary" // Aplicar estilo botón
-          disabled={isLoading || loadingCategories} // Deshabilitar mientras carga
+          disabled={loadingFormData || isLoading} // Deshabilitar mientras carga
         >
           {isLoading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Receta')}
        </button>

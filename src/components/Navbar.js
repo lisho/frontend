@@ -22,6 +22,7 @@ function Navbar({ isMobileMenuOpen, toggleMobileMenu }) {
         <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
           <li><Link to="/">Inicio</Link></li>
           <li><Link to="/add-recipe">Añadir Receta</Link></li>
+          <li><Link to="/manage-data">Gestionar Datos</Link></li>
           {/* ... otros enlaces ... */}
         </ul>
       </div>
