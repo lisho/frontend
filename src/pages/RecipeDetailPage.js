@@ -93,18 +93,19 @@ function RecipeDetailPage() {
   const categoryName = recipe.category?.name || 'Sin especificar';
   const categoryUrl = categoryId ? `/category/${categoryId}` : '#';
 
+  const canEditDelete = isAuthenticated && (user?.role === 'admin' || user?.id === recipe?.authorId);
+
   return (
     <div className="recipe-detail">
       {/* Botones de Acción */}
       <div className="recipe-actions main-actions">
           {/* Mostrar Editar/Borrar si es admin o autor (ejemplo) */}
-          {(user?.role === 'admin' /* || isAuthor */) && (
-                <>
-                  <Link to={`/edit-recipe/${recipe.id}`} className="button button-secondary">Editar</Link>
-                  <button onClick={handleDelete} className="button button-danger">Eliminar</button>
-                </>
-          )}
-
+          {canEditDelete && (
+                 <>
+                    <Link to={`/edit-recipe/${recipe.id}`} className="button button-secondary">Editar</Link>
+                    <button onClick={handleDelete} className="button button-danger">Eliminar</button>
+                 </>
+            )}
            {/* Botón Favorito (siempre visible si logueado, excepto si es autor?) */}
            {isAuthenticated /* && !isAuthor */ && (
                 <FavoriteButton

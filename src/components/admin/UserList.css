@@ -1,0 +1,53 @@
+/* src/components/admin/UserList.css */
+.user-list-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Para tablas anchas en pantallas pequeñas */
+  }
+  
+  .user-list-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--color-surface);
+    box-shadow: var(--box-shadow-light);
+    border-radius: var(--border-radius-medium);
+    overflow: hidden; /* Para bordes redondeados */
+  }
+  
+  .user-list-container th,
+  .user-list-container td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .user-list-container th {
+    background-color: #f8f9fa; /* Fondo claro para cabecera */
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  
+  .user-list-container tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .user-list-container tr:hover {
+     background-color: #f1f5f8; /* Fondo suave al pasar */
+  }
+  
+  
+  .user-list-container .action-buttons {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap; /* Evita que los botones se partan */
+  }
+  
+  .user-list-container .action-buttons .button {
+     padding: 5px 10px; /* Botones más pequeños */
+     font-size: 0.85em;
+  }
+  
+  .user-list-container td select {
+      padding: 6px 8px;
+      border-radius: var(--border-radius-small);
+      border: 1px solid var(--color-border);
+  }

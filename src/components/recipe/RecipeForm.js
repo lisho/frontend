@@ -1,13 +1,13 @@
 // src/components/RecipeForm.js
 import React, { useState, useEffect, useRef } from 'react';
-import { getAllCategories, getUniqueIngredients, getAllUnits } from '../services/api'; // Necesitamos las categorías
+import { getAllCategories, getUniqueIngredients, getAllUnits } from '../../services/api'; // Necesitamos las categorías
 import './RecipeForm.css'; // Crearemos este archivo para estilos
 
 // Estado inicial para un ingrediente vacío
 const emptyIngredient = { amount: '', unit: '', name: '' };
 
 
-function RecipeForm({ initialData, onSubmit, isEditMode = false }) {
+function RecipeForm({ initialData, onSubmit, isEditMode = false, isSubmitting, isLoadingData }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState([{ ...emptyIngredient }]);
@@ -472,12 +472,13 @@ const handleKeyDown = (e) => {
       </fieldset>
 
       <button
-          type="submit"
-          className="button-submit button button-primary" // Aplicar estilo botón
-          disabled={loadingFormData || isLoading} // Deshabilitar mientras carga
-        >
-          {isLoading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Receta')}
-       </button>
+                type="submit"
+                className="button-submit button button-primary"
+                // Deshabilitar si carga datos O si está enviando
+                disabled={isLoadingData || isSubmitting}
+              >
+                {isSubmitting ? 'Guardando...' : (isLoadingData ? 'Cargando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Receta'))}
+             </button>
        {/* Mover indicador de carga/error aquí si se aplica al submit */}
         {error && !loadingCategories && <p className="form-error" style={{marginTop: '15px'}}>{error}</p>}
     </form>

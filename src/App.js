@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import UserManagementPage from './pages/UserManagementPage'; // Importa UserManagementPage
 
 // Importa las páginas
 import HomePage from './pages/HomePage';
@@ -72,7 +73,7 @@ function AppContent() {
                      <Route element={<ProtectedRoute roleRequired="admin" />}>
                          <Route path="/manage-data" element={<ManageDataPage />} />
                          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-                         {/* <Route path="/admin/users" element={<UserListPage />} /> */}
+                         <Route path="/admin/users" element={<UserManagementPage />} /> 
                          {/* Puedes añadir más rutas de admin aquí */}
                      </Route>
 

@@ -73,6 +73,8 @@ export const getMyFavorites = () => apiClient.get('/users/me/favorites'); // Ase
 export const toggleFavorite = (recipeId) => apiClient.post(`/recipes/${recipeId}/favorite`);
 export const rateRecipe = (recipeId, score) => apiClient.post(`/recipes/${recipeId}/rate`, { score });
 
+
+
 // --- Funciones CRUD para Categorías ---
 export const getAllCategories = () => {
   return apiClient.get('/categories');
@@ -101,9 +103,25 @@ export const deleteUnit = (id) => {
     return apiClient.delete(`/units/${id}`);
 };
 
+// --- Funciones CRUD para Ingredientes ---
 export const getUniqueIngredients = () => {
   return apiClient.get('/ingredients/unique');
 };
+
+// **** FUNCIONES ADMIN PARA USUARIOS ****
+
+export const getAllUsers = () => { // La función que faltaba
+    return apiClient.get('/users'); // Llama a GET /api/users
+};
+
+export const updateUser = (id, userData) => { // La función que faltaba
+    return apiClient.put(`/users/${id}`, userData); // Llama a PUT /api/users/:id
+};
+
+export const deleteUser = (id) => { // La función que faltaba
+    return apiClient.delete(`/users/${id}`); // Llama a DELETE /api/users/:id
+};
+// **** FIN FUNCIONES ADMIN PARA USUARIOS ****
 
 // Exporta un objeto con todas las funciones o expórtalas individualmente
 // export default {

@@ -176,3 +176,37 @@
     font-size: 0.9em; /* Ajustar tamaño si es necesario */
     transition: background-color 0.3s ease;
   }
+
+  /* Estilos específicos para el botón de logout en la navbar */
+.nav-links .logout-button {
+  padding: 5px 12px; /* Ajusta el padding si es necesario */
+  font-size: 0.9em; /* Ajusta el tamaño de fuente si es necesario */
+  margin-left: 10px; /* Espacio respecto al enlace anterior */
+  background-color: transparent; /* Hacerlo transparente si prefieres look de enlace */
+  border: 1px solid var(--color-border); /* O quitar borde */
+  color: var(--color-text-light); /* Color más suave */
+}
+
+.nav-links .logout-button:hover {
+  background-color: #f8f9fa;
+  color: var(--color-accent); /* Color rojo al pasar? */
+  border-color: var(--color-accent);
+}
+
+/* Estilos para el botón logout en el menú móvil */
+@media (max-width: 768px) {
+    .nav-links.open li .logout-button {
+        display: block; /* Ocupar todo el ancho del li */
+        width: calc(100% - 50px); /* Ajustar ancho considerando padding del 'a' */
+        margin: 10px auto; /* Centrar y dar espacio */
+        text-align: center;
+        padding: 10px 15px; /* Padding estándar de botón */
+        background-color: var(--color-surface); /* Fondo normal */
+        border: 1px solid var(--color-border);
+        color: var(--color-accent); /* Color rojo para destacar acción */
+    }
+     .nav-links.open li .logout-button:hover {
+         background-color: #fbeae8; /* Fondo rojo claro */
+         border-color: var(--color-accent);
+     }
+}
