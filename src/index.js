@@ -3,12 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css'; // Estilos globales base
 import App from './App';
-// Quita la importación de reportWebVitals
-// Quita la llamada a reportWebVitals()
+import { AuthProvider } from './context/AuthContext'; // Importar AuthProvider
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );

@@ -81,10 +81,18 @@
   }
   
   /* Animación Hamburger a 'X' */
-  .mobile-menu-active .hamburger-icon { /* ... (sin cambios en la lógica) ... */ }
-  .mobile-menu-active .hamburger-icon::before { /* ... (sin cambios en la lógica) ... */ }
-  .mobile-menu-active .hamburger-icon::after { /* ... (sin cambios en la lógica) ... */ }
-  
+  .mobile-menu-active .hamburger-icon { /* Cambiar color al abrir el menú */
+    background-color: var(--color-secondary); /* Cambiar a un color diferente */
+  }
+  .mobile-menu-active .hamburger-icon::before {
+    transform: rotate(45deg); /* Girar la barra superior */
+    top: 0; /* Ajustar posición */
+  }
+  .mobile-menu-active .hamburger-icon::after {
+    transform: rotate(-45deg); /* Girar la barra inferior */
+    top: 0; /* Ajustar posición */
+  }
+ 
   /* --- Lista de Enlaces --- */
   .nav-links {
     list-style: none;
@@ -156,3 +164,15 @@
          border-bottom-color: var(--color-border);
      }
   } /* Fin de @media */
+
+
+  .logout-button {
+    background-color: var(--color-danger);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em; /* Ajustar tamaño si es necesario */
+    transition: background-color 0.3s ease;
+  }

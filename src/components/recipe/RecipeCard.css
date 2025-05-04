@@ -26,20 +26,28 @@
   .recipe-card-image-container {
     position: relative;
     width: 100%;
-    padding-top: 60%; /* Ajustar aspect ratio si es necesario (ej: 16:9 ~ 56.25%) */
+    height: 060%; /* Mantiene la proporción */
+    /* padding-top: 60%;  Ajustar aspect ratio si es necesario (ej: 16:9 ~ 56.25%) */
     overflow: hidden;
     background-color: #eee; /* Color de fondo mientras carga la imagen */
   }
-  
-  .recipe-card-image {
-    position: absolute;
+
+  .recipe-card-image-link {
+    display: block; /* Ocupa espacio */
+    position: absolute; /* Ocupa todo el contenedor relativo */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
+}
+  
+.recipe-card-image {
+  display: block; /* Quita espacio extra debajo si es inline */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
   .recipe-card:hover .recipe-card-image {
       transform: scale(1.03); /* Zoom muy sutil */
   }
@@ -48,6 +56,7 @@
     position: absolute;
     bottom: 10px; /* Abajo en vez de arriba */
     left: 10px;
+    z-index: 2; /* Asegura que esté encima de la imagen */
     background-color: rgba(44, 62, 80, 0.85); /* Fondo azul oscuro translúcido */
     color: var(--color-surface); /* Texto blanco */
     padding: 5px 12px;
@@ -56,7 +65,19 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px; /* Espaciado entre letras */
+    text-decoration: none;
+    transition: background-color 0.2s ease; /* Transición suave */
   }
+
+  .recipe-card-category:hover { /* Estilo hover solo si es enlace */
+    background-color: rgba(52, 152, 219, 0.9);
+}
+.recipe-card-category.no-link {
+    cursor: default;
+}
+.recipe-card-category.no-link:hover { /* Sin efecto hover si no es enlace */
+   background-color: rgba(44, 62, 80, 0.85);
+}
   
   .recipe-card-content {
     padding: 20px; /* Más padding */
@@ -90,7 +111,9 @@
     border-top: 1px solid var(--color-border);
   }
   .recipe-card-meta span {
-      /* Iconos podrían ir bien aquí */
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacio entre icono y texto */
   }
 
   .recipe-card-category {
@@ -112,3 +135,79 @@
       /* Podrías darle un aspecto ligeramente diferente si quieres */
       /* opacity: 0.8; */
   }
+
+  .recipe-card-wrapper { /* Si quitaste el Link principal */
+    display: block;
+    height: 100%;
+}
+
+/* Contenedor para interacciones */
+.recipe-card-interactions {
+    display: flex;
+    justify-content: space-between; /* Separa rating y favorito */
+    align-items: center;
+    margin-top: auto; /* Empuja al fondo */
+    padding-top: 15px;
+    border-top: 1px solid var(--color-border);
+}
+
+/* Estilos para RatingStarsDisplay (dentro de la tarjeta) */
+.rating-stars-display {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em; /* Más pequeño en la tarjeta */
+    color: var(--color-text-light);
+}
+
+.rating-stars-display .star-icon.display {
+    font-size: 1.1em; /* Ajustar tamaño de estrella */
+    color: #ccc; /* Color base vacío */
+    line-height: 1;
+}
+.rating-stars-display .star-icon.display.filled {
+    color: #fadb14; /* Color lleno */
+}
+.rating-stars-display .star-icon.display.half {
+    /* CSS para media estrella (puede ser complejo) */
+    /* Opción 1: Carácter unicode si existe */
+    /* Opción 2: Background-clip o máscara con gradiente */
+    position: relative;
+    color: #ccc; /* Base vacía */
+}
+.rating-stars-display .star-icon.display.half::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%; /* Solo la mitad */
+    overflow: hidden;
+    color: #fadb14; /* Color lleno */
+}
+
+
+.rating-stars-display .rating-count-display {
+    font-size: 0.9em;
+    margin-left: 2px;
+}
+
+/* Ajustar tamaño del botón favorito en la tarjeta */
+.recipe-card-interactions .favorite-button {
+    padding: 4px 8px; /* Más pequeño */
+    font-size: 0.8em;
+}
+
+/* Enlace solo en imagen */
+.recipe-card-image-link {
+    display: block;
+    position: relative; /* Para la categoría */
+}
+
+/* Quitar decoración de enlace en título */
+.recipe-card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+.recipe-card-title a:hover {
+    text-decoration: underline;
+}

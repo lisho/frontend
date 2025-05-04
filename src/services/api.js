@@ -1,6 +1,6 @@
 // src/services/api.js
 import axios from 'axios';
-
+import { getToken } from '../utils/localStorage'; // Asegúrate que la ruta sea correcta
 // Lee la URL base de la API desde las variables de entorno de React
 // Asegúrate de que la variable empiece con REACT_APP_
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
@@ -12,6 +12,26 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// 2. APLICA el interceptor a ESA instancia ANTES de definir las funciones API
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = getToken(); // Lee el token en cada petición
+    // console.log("Interceptor: Token encontrado:", token ? 'Sí' : 'No'); // Log para depurar interceptor
+    if (token) {
+      // console.log("Interceptor: Añadiendo cabecera Auth");
+      config.headers['Authorization'] = `Bearer ${token}`;
+    } else {
+         // Opcional: eliminarla si no hay token (por si acaso)
+         delete config.headers['Authorization'];
+    }
+    return config; // Devuelve la config modificada (o no)
+  },
+  (error) => {
+     console.error("Interceptor Error:", error);
+    return Promise.reject(error);
+  }
+);
 
 // --- Funciones para Recetas ---
 
@@ -38,6 +58,20 @@ export const deleteRecipe = (id) => {
   // ¡Necesitará autenticación en el futuro!
   return apiClient.delete(`/recipes/${id}`);
 };
+
+// --- Autenticación ---
+export const login = (credentials) => apiClient.post('/auth/login', credentials);
+export const register = (userData) => apiClient.post('/auth/register', userData);
+
+// --- Perfil de Usuario ---
+export const getMyProfile = () => apiClient.get('/users/me');
+export const updateMyProfile = (userData) => apiClient.put('/users/me', userData);
+export const getMyFavorites = () => apiClient.get('/users/me/favorites'); // Asegúrate que esta ruta exista o usa la otra
+
+// --- Recetas (Interacciones) ---
+// ... (getAllRecipes, getRecipeById, etc.) ...
+export const toggleFavorite = (recipeId) => apiClient.post(`/recipes/${recipeId}/favorite`);
+export const rateRecipe = (recipeId, score) => apiClient.post(`/recipes/${recipeId}/rate`, { score });
 
 // --- Funciones CRUD para Categorías ---
 export const getAllCategories = () => {

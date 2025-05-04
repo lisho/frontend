@@ -1,0 +1,84 @@
+/* src/components/recipe/RatingStars.css */
+.rating-stars-container {
+    display: flex;
+    flex-direction: column; /* O 'row' y alinear items */
+    align-items: flex-start; /* O 'center' */
+    gap: 5px;
+  }
+  
+  .rating-stars-container.disabled .stars {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .rating-stars-container.loading .stars {
+    cursor: wait;
+    opacity: 0.7;
+  }
+  
+  
+  .stars {
+    display: inline-block; /* Para que el title funcione bien */
+    font-size: 1.5em; /* Tamaño de las estrellas */
+    color: var(--color-border); /* Color base (estrellas vacías) */
+    cursor: pointer;
+    line-height: 1; /* Ajustar si es necesario */
+  }
+  
+  .star-icon {
+    display: inline-block;
+    position: relative; /* Para superponer estrellas */
+    transition: color 0.2s ease, transform 0.1s ease;
+  }
+  
+  /* Oculta la estrella vacía por defecto */
+  .star-icon > span { /* Asumiendo que el ☆ está dentro del span .star-icon */
+     /* visibility: hidden; */
+  }
+  /* Usaremos color para simular llenado */
+  .star-icon::before { /* Usar ::before para la estrella llena */
+      content: '★'; /* Estrella llena */
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: transparent; /* Transparente por defecto */
+      transition: color 0.2s ease;
+  }
+  
+  
+  /* Estilos para estrellas seleccionadas (voto persistente) */
+  .star-icon.selected::before {
+    color: #fadb14; /* Amarillo/Dorado para seleccionada */
+  }
+  /* O si prefieres colorear el icono base */
+  /* .star-icon.selected {
+     color: #fadb14;
+  } */
+  
+  
+  /* Estilos para estrellas en hover */
+  .star-icon.hover::before {
+    color: #ffc107; /* Un amarillo más brillante para hover */
+  }
+  /* O si prefieres colorear el icono base */
+  /* .star-icon.hover {
+     color: #ffc107;
+  } */
+  
+  
+  /* Efecto sutil al pasar por encima si no está deshabilitado */
+  .rating-stars-container:not(.disabled):not(.loading) .star-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Información del rating */
+  .rating-info {
+    font-size: 0.85em;
+    color: var(--color-text-light);
+  }
+  
+  /* Mensaje de error */
+  .rating-error {
+      color: var(--color-accent);
+      font-size: 0.8em;
+      margin-top: 3px;
+  }

@@ -1,7 +1,7 @@
 // src/pages/HomePage.js
 import React, { useState, useEffect } from 'react';
 import { getAllRecipes } from '../services/api';
-import RecipeCard from '../components/RecipeCard'; // Importa la tarjeta
+import RecipeCard from '../components/recipe/RecipeCard'; // Importa la tarjeta
 import './HomePage.css'; // Creamos estilos para la cuadrícula
 
 function HomePage() {

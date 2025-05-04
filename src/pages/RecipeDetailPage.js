@@ -1,12 +1,16 @@
 // src/pages/RecipeDetailPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom'; // Añadir Link
+import { useAuth } from '../context/AuthContext'; // Importar useAuth
 import { getRecipeById, deleteRecipe } from '../services/api';
-import './RecipeDetailPage.css'; // Crearemos estilos
+import FavoriteButton from '../components/recipe/FavoriteButton'; // Importar
+import RatingStars from '../components/recipe/RatingStars'; // Importar
+import './RecipeDetailPage.css'; // Importar estilos CSS
 
 function RecipeDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth(); // Obtener estado y usuario
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -92,13 +96,22 @@ function RecipeDetailPage() {
   return (
     <div className="recipe-detail">
       {/* Botones de Acción */}
-      <div className="recipe-actions">
-          <Link to={`/edit-recipe/${recipe.id}`} className="button button-secondary">
-              Editar
-          </Link>
-          <button onClick={handleDelete} className="button button-danger">
-              Eliminar
-          </button>
+      <div className="recipe-actions main-actions">
+          {/* Mostrar Editar/Borrar si es admin o autor (ejemplo) */}
+          {(user?.role === 'admin' /* || isAuthor */) && (
+                <>
+                  <Link to={`/edit-recipe/${recipe.id}`} className="button button-secondary">Editar</Link>
+                  <button onClick={handleDelete} className="button button-danger">Eliminar</button>
+                </>
+          )}
+
+           {/* Botón Favorito (siempre visible si logueado, excepto si es autor?) */}
+           {isAuthenticated /* && !isAuthor */ && (
+                <FavoriteButton
+                    recipeId={recipe.id}
+                    initialIsFavorited={recipe.isFavorited || false}
+                />
+            )}
       </div>
 
       <h2 className="recipe-title">{recipe.title}</h2>
@@ -110,6 +123,19 @@ function RecipeDetailPage() {
               <span className="recipe-category-name no-link">{categoryName}</span>
         )}
         {/* --- FIN ENLACE CATEGORÍA --- */}
+
+    {/* --- NUEVO: SECCIÓN DE VALORACIÓN --- */}
+    <div className="recipe-rating-section">
+    {console.log("Pasando a RatingStars:", { initialUserRating : recipe.userRating || 0, averageRating: recipe.averageRating || 0 })}
+       
+        <RatingStars
+            recipeId={recipe.id}
+            averageRating={recipe.averageRating || 0}
+            ratingCount={recipe.ratingCount || 0}
+            initialUserRating={recipe.userRating || 0}
+        />
+    </div>
+    {/* --- FIN SECCIÓN VALORACIÓN --- */}
 
       {recipe.imageUrl && (
         <img src={recipe.imageUrl} alt={recipe.title} className="recipe-image" />
@@ -124,6 +150,7 @@ function RecipeDetailPage() {
           {recipe.preparationTime && <span>Prep: {recipe.preparationTime} min</span>}
           {recipe.cookingTime && <span>Cocción: {recipe.cookingTime} min</span>}
           {recipe.servings && <span>Porciones: {recipe.servings}</span>}
+          {recipe.authorUsername && <span>Autor: {recipe.authorUsername}</span>}
       </div>
 
       <div className="recipe-content">

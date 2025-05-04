@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getAllRecipes } from '../services/api'; // Solo necesitamos esta
-import RecipeCard from '../components/RecipeCard';
+import RecipeCard from '../components/recipe/RecipeCard';
 import '../pages/HomePage.css'; // Reutilizar estilos de grid
 import './CategoryPage.css'; // Estilos específicos para esta página
 

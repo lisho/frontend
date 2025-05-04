@@ -185,3 +185,52 @@
  /* ... (asegúrate de que el layout se vea bien sin el item de categoría) ... */
  justify-content: flex-start; /* O 'center' si prefieres */
 }
+
+/* Ajustar contenedor de acciones principales si es necesario */
+.recipe-actions.main-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; /* Alinear verticalmente */
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Estilo para el botón favorito dentro de las acciones principales */
+.recipe-actions.main-actions .favorite-button {
+  /* Hereda de .button? O estilos propios? */
+   /* Ejemplo: un poco más grande que en la tarjeta */
+  padding: 8px 14px;
+  font-size: 1em;
+  /* Quitar borde/fondo transparente si hereda de .button */
+  /* background-color: var(--color-surface); */
+  /* border: 1px solid var(--color-accent); */ /* Si está favoriteado */
+}
+
+
+/* Nueva sección para rating */
+.recipe-rating-section {
+  margin-top: 15px; /* Espacio después de categoría */
+  margin-bottom: 30px; /* Espacio antes de imagen/descripción */
+  padding: 15px 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  display: flex; /* Para controlar alineación si es necesario */
+  justify-content: center; /* Centrar las estrellas */
+}
+
+/* Ajustar tamaño/apariencia de RatingStars en esta página */
+.recipe-rating-section .rating-stars-container {
+  align-items: center; /* Centrar texto debajo de estrellas */
+}
+.recipe-rating-section .stars {
+  font-size: 1.8em; /* Estrellas más grandes */
+}
+.recipe-rating-section .rating-info {
+  font-size: 0.95em; /* Info un poco más grande */
+  margin-top: 8px;
+}
+.recipe-rating-section .rating-error {
+  margin-top: 5px;
+}
