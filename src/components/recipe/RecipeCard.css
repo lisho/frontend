@@ -109,7 +109,23 @@
     margin-top: auto; /* Empuja al fondo */
     padding-top: 15px;
     border-top: 1px solid var(--color-border);
+    flex-wrap: wrap; /* Permitir que los elementos bajen si no caben */
   }
+
+.recipe-author-meta {
+  /* Estilos para el autor en la tarjeta */
+  display: inline-flex; /* Para alinear icono y texto */
+  align-items: center;
+  /* background-color: #eee; */ /* Fondo opcional */
+  /* padding: 2px 6px; */
+  /* border-radius: 3px; */
+  margin-right: 10px; /* Espacio a la derecha */
+  white-space: nowrap; /* Evitar que el nombre se parta */
+  overflow: hidden; /* Ocultar si es muy largo */
+  text-overflow: ellipsis; /* Añadir puntos suspensivos */
+  max-width: 100px; /* Limitar ancho máximo */
+}
+
   .recipe-card-meta span {
     display: flex;
     align-items: center;

@@ -32,6 +32,35 @@
     border-style: solid; /* Borde sólido para error */
 }
 
+.sorting-controls {
+  display: flex;
+  justify-content: flex-end; /* Alinear a la derecha */
+  align-items: center;
+  margin-bottom: 25px; /* Espacio debajo */
+  gap: 8px;
+}
+
+.sorting-controls label {
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--color-text-light);
+}
+
+.sorting-controls select {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-small);
+  background-color: var(--color-surface);
+  font-size: 0.95em;
+  cursor: pointer;
+}
+
+.sorting-controls select:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
 @media (max-width: 600px) {
   .recipe-grid {
     grid-template-columns: 1fr; /* Una columna en móvil */

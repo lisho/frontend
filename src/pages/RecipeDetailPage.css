@@ -76,7 +76,47 @@
   border-bottom: 1px solid var(--color-border);
   font-size: 0.95em;
   color: var(--color-text-light);
+ align-items: center; /* Alinear items verticalmente */
 }
+
+.recipe-author-detail {
+  /* Estilos para el autor en detalle */
+  display: inline-flex; /* Para icono y texto */
+  align-items: center;
+  color: var(--color-text-light);
+  font-weight: 500; /* O normal */
+}
+.recipe-author-detail strong {
+  color: var(--color-text); /* Nombre de usuario más oscuro */
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.recipe-author-meta {
+  display: inline-flex; /* Convertir a contenedor flex */
+  align-items: center;  /* Alinear icono y texto verticalmente */
+  max-width: 100%; /* O el ancho máximo que quieras */
+  flex-grow: 1; /* Para que ocupe el espacio restante */
+  overflow: hidden; /* Ocultar desbordamiento DEL CONTENEDOR */
+  /* Quitar white-space y text-overflow de aquí si estaban */
+  margin-right: 10px;
+  vertical-align: middle; /* Para alinear el span con otros spans */
+}
+
+.recipe-author-meta svg {
+  flex-shrink: 0; /* Evita que el icono se encoja */
+  margin-right: 4px; /* Espacio entre icono y nombre */
+  /* Asegúrate de que el width/height del SVG sea fijo */
+}
+
+/* Span para el nombre, para aplicar ellipsis */
+.recipe-author-meta .author-name-text {
+  white-space: nowrap; /* Evitar que el nombre se parta */
+  overflow: hidden; /* Ocultar desbordamiento del nombre */
+  text-overflow: ellipsis; /* Poner puntos suspensivos */
+  /* Opcional: flex-grow: 1; si quieres que ocupe el espacio restante */
+}
+
 .recipe-meta span {
   background-color: transparent; /* Sin fondo */
   padding: 0;
@@ -178,12 +218,6 @@
   cursor: default;
   border-bottom: none;
   color: var(--color-text-light); /* Un color más tenue quizás */
-}
-
-/* Ajuste en recipe-meta si quitaste la categoría */
-.recipe-meta {
- /* ... (asegúrate de que el layout se vea bien sin el item de categoría) ... */
- justify-content: flex-start; /* O 'center' si prefieres */
 }
 
 /* Ajustar contenedor de acciones principales si es necesario */

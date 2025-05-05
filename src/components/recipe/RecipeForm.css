@@ -1,7 +1,9 @@
 /* src/components/RecipeForm.css */
+
+/* --- Estilos Base (Escritorio y Generales) --- */
 .recipe-form {
-  background-color: var(--color-surface); /* Blanco */
-  padding: 35px 40px; /* Más padding */
+  background-color: var(--color-surface);
+  padding: 35px 40px;
   border-radius: var(--border-radius-medium);
   box-shadow: var(--box-shadow-light);
   border: 1px solid var(--color-border);
@@ -9,7 +11,7 @@
 }
 
 .recipe-form h2 {
-  text-align: left; /* Alinear a la izquierda */
+  text-align: left;
   margin-top: 0;
   margin-bottom: 30px;
   font-size: 1.8em;
@@ -19,153 +21,152 @@
 }
 
 .form-error {
-    color: var(--color-accent);
-    background-color: #fbeae8;
-    border: 1px solid var(--color-accent);
-    padding: 12px 18px;
-    border-radius: var(--border-radius-small);
-    margin-bottom: 25px;
-    font-size: 0.95em;
+  color: var(--color-accent);
+  background-color: #fbeae8;
+  border: 1px solid var(--color-accent);
+  padding: 12px 18px;
+  border-radius: var(--border-radius-small);
+  margin-bottom: 25px;
+  font-size: 0.95em;
 }
 
 .form-group {
-  margin-bottom: 25px; /* Más espacio entre grupos */
+  margin-bottom: 25px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 600; /* Labels más gruesas */
-  color: var(--color-text); /* Gris oscuro */
-  font-size: 0.9em; /* Ligeramente más pequeñas */
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.9em;
 }
 
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="url"],
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 12px 15px; /* Más padding interno */
+/* Estilos base para inputs, textareas, selects */
+.recipe-form input[type="text"],
+.recipe-form input[type="number"],
+.recipe-form input[type="url"],
+.recipe-form textarea,
+.recipe-form select,
+.ingredient-item .input-amount, /* Incluir inputs de ingredientes */
+.ingredient-item .input-unit,
+.ingredient-item .input-name,
+.step-item .input-step { /* Incluir textarea de pasos */
+  width: 100%; /* Ocupar ancho del contenedor padre por defecto */
+  padding: 12px 15px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-small);
   box-sizing: border-box;
   font-size: 1em;
-  background-color: #fdfdfd; /* Fondo ligeramente distinto */
+  background-color: #fdfdfd;
   color: var(--color-text);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  height: 46px; /* Altura consistente */
 }
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--color-secondary); /* Borde azul al enfocar */
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Sombra exterior azul */
-    
-}
-
-.form-group textarea {
+/* Ajuste específico para textarea */
+.recipe-form textarea,
+.step-item .input-step {
+    height: auto; /* Permitir que crezca */
+    min-height: 80px;
     resize: vertical;
-    min-height: 80px; /* Altura mínima textarea */
+    line-height: 1.5; /* Mejorar legibilidad en textarea */
+     padding-top: 10px; /* Ajustar padding vertical si es necesario */
+     padding-bottom: 10px;
+}
+/* Ajuste específico para select */
+.recipe-form select,
+.ingredient-item .input-unit {
+    /* Apariencia (opcional) */
+    /* appearance: none; */
+    /* background-image: url(...); */
+    /* background-position: right 10px center; */
+    /* background-size: 10px; */
+    /* padding-right: 30px; */
+    height: 46px; /* Mantener altura */
 }
 
-/* Secciones Ingredientes y Pasos */
-.form-section {
-  border: none; /* Quitar borde de fieldset */
-  border-top: 1px solid var(--color-border); /* Línea superior */
-  border-bottom: 1px solid var(--color-border); /* Línea inferior */
-  padding: 25px 0; /* Padding vertical solo */
-  margin: 35px 0; /* Más margen vertical */
-}
 
-.form-section legend {
-  font-weight: 600;
-  color: var(--color-primary); /* Azul oscuro */
-  font-size: 1.2em; /* Más grande */
-  margin-bottom: 20px;
-  padding: 0; /* Sin padding extra */
-}
-
-.ingredient-item, .step-item {
-  display: flex;
-  align-items: flex-start; /* Alinear arriba para textareas */
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-/* --- ESTILOS PARA CAMPOS DE INGREDIENTES --- */
-
-/* Aplicar estilos base de input/select a los campos de ingredientes */
-.ingredient-item .input-amount,
-.ingredient-item .input-unit,
-.ingredient-item .input-name {
-  /* Copia/Aplica los estilos base de .form-group input/select */
-  padding: 12px 15px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-small);
-  box-sizing: border-box; /* Importante */
-  font-size: 1em;
-  background-color: #fdfdfd; /* O el color de fondo que usen los otros */
-  color: var(--color-text);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  margin: 0; /* Resetea márgenes por si acaso */
-  height: 46px; /* <-- FIJA UNA ALTURA CONSISTENTE (ajusta este valor) */
-                  /* Inspecciona la altura computada de tus otros inputs/selects */
-                  /* para que coincidan. Incluye padding y borde. */
-  /* NO INCLUIR 'width: 100%' aquí */
-}
-
-/* Ajustar anchos de ingredientes */
-.ingredient-item .input-amount { flex-basis: 100px; flex-grow: 0; }
-.ingredient-item .input-unit { flex-basis: 120px; flex-grow: 0; }
-.ingredient-item .input-name { flex: 1; } /* Ocupar resto */
-
-* Aplicar estilos de foco a los campos de ingredientes */
-.ingredient-item .input-amount:focus,
-.ingredient-item .input-unit:focus,
-.ingredient-item .input-name:focus {
-  /* Copia/Aplica los estilos de foco de .form-group input/select:focus */
+/* Estilos de Foco */
+.recipe-form input:focus,
+.recipe-form textarea:focus,
+.recipe-form select:focus,
+.ingredient-item input:focus,
+.ingredient-item select:focus,
+.step-item textarea:focus {
   outline: none;
   border-color: var(--color-secondary);
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
-/* Asegurar alineación vertical si la altura es fija */
+/* --- Secciones Fieldset (Ingredientes y Pasos) --- */
+.form-section {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 25px 0;
+  margin: 35px 0;
+}
+
+.form-section legend {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+/* --- Sección Ingredientes Layout --- */
 .ingredient-item {
   display: flex;
-  /* align-items: center; */ /* <-- Cambia a 'center' si prefieres centrado verticalmente */
-  align-items: flex-start; /* Mantenemos flex-start por si el nombre ocupa varias líneas */
-  gap: 15px;
+  flex-wrap: wrap; /* Permitir que los elementos bajen */
+  align-items: flex-start; /* Alinear arriba */
+  gap: 10px 15px; /* Espacio vertical y horizontal */
   margin-bottom: 15px;
+  position: relative; /* Para posicionar el botón remove si es necesario */
+  padding-bottom: 10px; /* Espacio extra debajo */
+   border-bottom: 1px dashed #eee; /* Separador suave */
 }
+ .ingredient-item:last-of-type {
+    border-bottom: none;
+ }
 
-/* Ajuste para el botón de remover si se usa altura fija en inputs */
-.ingredient-item .button-remove {
-   margin-top: 8px; /* Ajusta este margen para alinear verticalmente con los inputs */
-                   /* O usa align-self: center; si .ingredient-item usa align-items: center */
-    /* align-self: center; */
+
+/* Anchos Flexibles para Inputs de Ingredientes */
+.ingredient-item .input-amount {
+    flex: 1 1 100px; /* Crece, Encoge, Base de 100px */
+    min-width: 80px; /* Ancho mínimo */
+    width: auto; /* Anular width 100% base */
 }
-
-/* Ajuste para el select de unidad si se usa altura fija */
 .ingredient-item .input-unit {
-    /* Puede que necesites ajustar padding-top/bottom específicamente */
-    /* si el texto interno no se centra bien con la altura fija */
+    flex: 1 1 120px; /* Crece, Encoge, Base de 120px */
+    min-width: 100px;
+    width: auto; /* Anular width 100% base */
 }
-
-.step-item .step-number {
-    font-weight: 600;
-    color: var(--color-secondary);
-    padding-top: 12px; /* Alinear con texto del input */
-    width: 30px;
-    text-align: right;
-    flex-shrink: 0; /* No encoger */
+.ingredient-item .input-name {
+    flex: 3 1 100%; /* Crece más, Encoge, Base de 100% (ocupará línea si puede) */
+    min-width: 150px;
+    width: auto; /* Anular width 100% base */
 }
-.step-item .input-step { flex: 1; }
+/* Wrapper para sugerencias (ya existente) */
+.ingredient-name-wrapper {
+  position: relative;
+  flex: 3 1 100%; /* Mismo flex que input-name */
+  min-width: 150px;
+  width: auto; /* Anular width 100% base */
+}
+.ingredient-name-wrapper .input-name {
+    width: 100%; /* Input dentro del wrapper sí es 100% */
+}
+.suggestions-list { /* Estilos de sugerencias existentes */
+    /* ... */
+}
+.suggestion-item { /* ... */ }
 
-/* Botones Add/Remove */
+
+/* Botón Remover Ingrediente/Paso */
 .button-remove {
-  background-color: #ecf0f1; /* Gris claro */
-  color: var(--color-accent); /* Icono rojo */
+  background-color: #ecf0f1;
+  color: var(--color-accent);
   border: 1px solid var(--color-border);
   border-radius: 50%;
   width: 30px;
@@ -175,25 +176,53 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: 8px; /* Alinear con inputs */
   padding: 0;
-  flex-shrink: 0;
+  flex-shrink: 0; /* No encoger */
+  /* Alinearlo */
+  margin-left: auto; /* Empujar a la derecha en el flex wrap */
+   margin-top: 8px; /* Alinear aprox con la altura de los inputs (ajustar) */
 }
-.button-remove:hover {
-  background-color: var(--color-accent);
-  color: var(--color-surface);
-  border-color: var(--color-accent);
+.button-remove:hover { /* ... */ }
+.button-remove:disabled { /* ... */ }
+
+
+/* --- Sección Pasos Layout --- */
+.step-item {
+  display: flex;
+  /* flex-wrap: wrap; */ /* Puede no ser necesario si textarea es flexible */
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+   border-bottom: 1px dashed #eee; /* Separador suave */
+   padding-bottom: 10px;
 }
-.button-remove:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background-color: #ecf0f1;
-  color: #bdc3c7;
-  border-color: #ddd;
+ .step-item:last-of-type {
+    border-bottom: none;
+ }
+
+.step-item .step-number {
+    font-weight: 600;
+    color: var(--color-secondary);
+    padding-top: 12px; /* Alinear con texto del textarea */
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+    line-height: 1.5; /* Coincidir con textarea */
+}
+.step-item .input-step {
+    flex: 1; /* Ocupa el espacio restante */
+    width: auto; /* Anular width 100% */
+     height: auto; /* Resetear altura fija */
+     min-height: 60px; /* Mínimo más pequeño */
+}
+.step-item .button-remove {
+     margin-left: 0; /* No necesita margen auto aquí */
+      margin-top: 8px; /* Alinear */
 }
 
+
+/* Botón Añadir */
 .button-add {
-  /* Usar clases globales .button .button-secondary pero más pequeño? */
   background-color: var(--color-surface);
   color: var(--color-secondary);
   border: 1px dashed var(--color-secondary);
@@ -201,93 +230,138 @@
   padding: 8px 15px;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: 10px;
+  margin-top: 15px; /* Espacio después de la lista */
   font-weight: 600;
 }
-.button-add:hover {
-  background-color: rgba(52, 152, 219, 0.1); /* Fondo azul muy tenue */
-  border-style: solid;
-}
+.button-add:hover { /* ... */ }
 
-
-/* Detalles adicionales en fila */
+/* --- Sección Detalles Adicionales --- */
 .form-row {
-    display: grid; /* Usar grid para mejor control */
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Columnas adaptables */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
     margin-bottom: 25px;
 }
 .form-row .form-group {
-    margin-bottom: 0;
+    margin-bottom: 0; /* Quitar margen inferior si están en grid/flex */
 }
+.form-row .form-group input[type="number"] {
+     width: 100%; /* Asegurar ancho completo dentro del grid */
+      height: 46px; /* Mantener altura */
+}
+
 
 /* Botón Submit */
 .button-submit {
   /* Usar clase global .button .button-primary */
-  padding: 12px 30px; /* Padding generoso */
+  padding: 12px 30px;
   font-size: 1.1em;
-  display: block;
-  width: auto; /* No ocupar todo el ancho */
+  display: block; /* Ocupar ancho para centrar con margin */
+  width: auto; /* Ancho automático basado en padding */
+  min-width: 150px; /* Ancho mínimo */
   margin: 30px auto 0 auto; /* Centrar el botón */
 }
 
-/* Wrapper para el input de nombre y su lista de sugerencias */
-.ingredient-name-wrapper {
-  position: relative; /* Necesario para posicionar la lista absoluta */
-  flex: 1; /* Ocupar el espacio disponible como lo hacía el input */
+
+/* --- MEDIA QUERIES PARA RESPONSIVE --- */
+
+/* Tablets y Teléfonos Grandes (ej: < 768px) */
+@media (max-width: 768px) {
+    .recipe-form {
+        padding: 25px 20px; /* Reducir padding */
+    }
+    .recipe-form h2 {
+        font-size: 1.6em;
+        margin-bottom: 25px;
+    }
+
+    /* Apilar inputs de ingredientes más agresivamente */
+     .ingredient-item {
+         gap: 10px; /* Menos gap */
+     }
+     .ingredient-item .input-amount,
+     .ingredient-item .input-unit {
+         flex-basis: calc(50% - 8px); /* Intentar poner 2 por línea */
+         min-width: 100px;
+     }
+      .ingredient-item .input-name,
+      .ingredient-name-wrapper {
+         flex-basis: 100%; /* Nombre siempre en línea propia */
+         min-width: unset; /* Quitar min-width */
+     }
+
+    /* Botón remover necesita ajustarse al wrap */
+    .ingredient-item .button-remove {
+         /* Podría necesitar posicionamiento absoluto si el wrap no funciona bien */
+         /* position: absolute; */
+         /* top: 10px; */
+         /* right: 0; */
+          margin-left: 0; /* Resetear margen */
+          margin-top: 0; /* Resetear margen */
+          align-self: center; /* Intentar centrarlo verticalmente con los últimos inputs */
+    }
+
+     /* Asegurar que el textarea de pasos ocupe buen espacio */
+      .step-item .input-step {
+          min-height: 80px; /* Altura mínima móvil */
+     }
+
+      /* Apilar la fila de detalles adicionales */
+      .form-row {
+         grid-template-columns: 1fr; /* Una sola columna */
+         gap: 15px; /* Menos gap vertical */
+     }
+     .form-row .form-group {
+         margin-bottom: 0; /* Ya hay gap en el grid */
+     }
+
+     .button-add {
+          width: 100%; /* Ocupar todo el ancho */
+          text-align: center;
+     }
+     .button-submit {
+         width: 100%; /* Ocupar todo el ancho */
+          margin-top: 25px;
+     }
+
 }
 
-/* Lista de Sugerencias */
-.suggestions-list {
-  position: absolute;
-  background-color: var(--color-surface); /* Fondo blanco */
-  border: 1px solid var(--color-border);
-  border-top: none; /* Unir con el input */
-  border-radius: 0 0 var(--border-radius-small) var(--border-radius-small); /* Redondear abajo */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: 100%; /* Mismo ancho que el input (relativo al wrapper) */
-  max-height: 200px; /* Altura máxima antes de scroll */
-  overflow-y: auto;
-  z-index: 10; /* Asegurar que esté por encima de otros elementos */
-  /* Transición suave? */
-  /* opacity: 0; */
-  /* transition: opacity 0.1s ease-in-out; */
-}
-/* .suggestions-list.visible { // Si usamos clase para visibilidad
-    opacity: 1;
-} */
 
+/* Teléfonos Pequeños (ej: < 576px) */
+@media (max-width: 576px) {
+     .recipe-form {
+        padding: 20px 15px;
+    }
+     .recipe-form h2 {
+        font-size: 1.4em;
+    }
+    .form-group {
+        margin-bottom: 20px; /* Menos espacio */
+    }
+    /* Hacer que Amount y Unit ocupen línea completa si necesario */
+    .ingredient-item .input-amount,
+    .ingredient-item .input-unit {
+         flex-basis: 100%; /* Una línea cada uno */
+     }
+    .ingredient-item .button-remove {
+        /* Ajustar posición si todo está apilado */
+        position: absolute;
+        top: 5px;
+        right: 5px;
+         width: 26px;
+         height: 26px;
+         line-height: 24px;
+         font-size: 1.2em;
+    }
+     .ingredient-item {
+         padding-right: 40px; /* Espacio para el botón absoluto */
+          padding-bottom: 15px;
+          margin-bottom: 20px;
+    }
 
-.suggestion-item {
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 0.95em;
-  border-bottom: 1px solid var(--color-border);
-  transition: background-color 0.1s ease;
-}
-.suggestion-item:last-child {
-  border-bottom: none;
-}
-
-.suggestion-item:hover,
-.suggestion-item.active { /* Estilo para item activo con teclado o hover */
-  background-color: #eaf5ff; /* Azul muy claro */
-  color: var(--color-primary);
-}
-
-
-/* Ajustes para Select de Unidad */
-.ingredient-item .input-unit {
-    flex-basis: 140px; /* Un poco más de espacio para el select */
-    flex-grow: 0;
-    /* Apariencia (opcional, depende del navegador) */
-    /* appearance: none; */
-    /* background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); */
-    /* background-repeat: no-repeat; */
-    /* background-position: right 10px center; */
-    /* background-size: 10px 10px; */
-    /* padding-right: 30px; */ /* Espacio para la flecha */
+     /* Ajustar texto de botones */
+      .button-add, .button-submit {
+          font-size: 1em;
+          padding: 10px 20px;
+      }
 }

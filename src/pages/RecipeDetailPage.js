@@ -92,7 +92,7 @@ function RecipeDetailPage() {
   const categoryId = recipe.category?.id;
   const categoryName = recipe.category?.name || 'Sin especificar';
   const categoryUrl = categoryId ? `/category/${categoryId}` : '#';
-
+  const authorName = recipe.author?.username;
   const canEditDelete = isAuthenticated && (user?.role === 'admin' || user?.id === recipe?.authorId);
 
   return (
@@ -152,6 +152,16 @@ function RecipeDetailPage() {
           {recipe.cookingTime && <span>Cocción: {recipe.cookingTime} min</span>}
           {recipe.servings && <span>Porciones: {recipe.servings}</span>}
           {recipe.authorUsername && <span>Autor: {recipe.authorUsername}</span>}
+
+           {/* Mostrar Autor si existe */}
+           {authorName && (
+                <span className="recipe-author-detail" title={`Receta creada por ${authorName}`}>
+                    {/* Icono opcional */}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style={{ verticalAlign: 'middle', marginRight: '5px' }}><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99-.334.75.75 0 0 1-1.5-.071 6.005 6.005 0 0 1 3.431-5.142 3.994 3.994 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"></path></svg>
+                    Autor: <strong>{authorName}</strong>
+                </span>
+            )}
+           
       </div>
 
       <div className="recipe-content">
