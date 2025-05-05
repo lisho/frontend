@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 // Importa los nuevos componentes
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/common/ScrollToTop'; // Importa ScrollToTop
 
 import ProtectedRoute from './components/auth/ProtectedRoute'; // Importa ProtectedRoute
 import LoginPage from './pages/LoginPage';
@@ -27,7 +28,7 @@ import './App.css';
 // Wrapper de contenido
 function AppContent() {
     //const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    //const location = useLocation();
+    const location = useLocation();
 
     // Cierra menú al navegar
     //useEffect(() => {
@@ -44,7 +45,7 @@ function AppContent() {
     return (
         // El padding se aplica aquí para empujar el contenido
         <div className="App" style={{ paddingTop: headerHeight }}>
-
+            <ScrollToTop /> 
             {/* Renderiza el componente Navbar */}
             <Navbar
                 //isMobileMenuOpen={isMobileMenuOpen}
