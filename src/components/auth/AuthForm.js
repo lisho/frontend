@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 // import './AuthForm.css'; // Si creas estilos específicos
 
-function AuthForm({ onSubmit, isRegister = false, submitButtonText = 'Enviar' }) {
+function AuthForm({ onSubmit, isRegister = false, submitButtonText = 'Enviar', isLoading }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState(''); // Solo para registro
@@ -15,6 +15,7 @@ function AuthForm({ onSubmit, isRegister = false, submitButtonText = 'Enviar' })
             formData.username = username;
             formData.confirmPassword = confirmPassword; // Pasa confirmación para validación en la página
         }
+        if (isLoading) return;
         onSubmit(formData);
     };
 
@@ -40,7 +41,12 @@ function AuthForm({ onSubmit, isRegister = false, submitButtonText = 'Enviar' })
                     <input type="password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                 </div>
             )}
-             <button type="submit" className="button button-primary auth-submit">
+              <button
+                type="submit"
+                className="button button-primary auth-submit"
+                disabled={isLoading} // <-- Deshabilitar si isLoading es true
+             >
+                 {/* El texto ya se pasa como prop desde la página */}
                  {submitButtonText}
              </button>
         </form>

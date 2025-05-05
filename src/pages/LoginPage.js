@@ -1,22 +1,22 @@
 // src/pages/LoginPage.js
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom'; // Importa Link
 import { useAuth } from '../context/AuthContext';
-import AuthForm from '../components/auth/AuthForm'; // Asume que este componente existe
+import AuthForm from '../components/auth/AuthForm';
+import '../components/auth/Auth.css'; // <-- Importa los nuevos estilos
 
 function LoginPage() {
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login, isLoading } = useAuth(); // Añadir isLoading
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/'; // A dónde redirigir después del login
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = async (credentials) => {
-        setError(''); // Limpiar error previo
+        setError('');
         try {
             await login(credentials);
-            // console.log("Login exitoso, redirigiendo a:", from);
-            navigate(from, { replace: true }); // Redirige a la página original o a la home
+            navigate(from, { replace: true });
         } catch (err) {
             const message = err.response?.data?.message || 'Error al iniciar sesión. Verifica tus credenciales.';
             setError(message);
@@ -24,12 +24,24 @@ function LoginPage() {
     };
 
     return (
-        <div>
-            <h2>Iniciar Sesión</h2>
-            {error && <p className="error-message">{error}</p>}
-            {/* Pasamos isRegister={false} para que el form sepa qué hacer */}
-            <AuthForm onSubmit={handleLogin} isRegister={false} submitButtonText="Entrar" />
-            {/* Podrías añadir un enlace a /register aquí */}
+        // Contenedor para centrar
+        <div className="auth-page-container">
+             {/* Tarjeta */}
+            <div className="auth-card">
+                <h2>Iniciar Sesión</h2>
+                {error && <p className="error-message">{error}</p>}
+                <AuthForm
+                    onSubmit={handleLogin}
+                    isRegister={false}
+                    submitButtonText={isLoading ? "Entrando..." : "Entrar"} // Texto dinámico
+                    // Pasar isLoading para deshabilitar botón si es necesario (AuthForm debe aceptarlo)
+                    isLoading={isLoading}
+                />
+                {/* Enlace a Registro */}
+                <p className="auth-link">
+                    ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+                </p>
+            </div>
         </div>
     );
 }

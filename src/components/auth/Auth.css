@@ -1,0 +1,101 @@
+/* src/components/auth/Auth.css */
+
+/* Contenedor para centrar la tarjeta en la página */
+.auth-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinear arriba si el contenido es largo */
+    padding: 40px 20px; /* Espaciado superior/inferior y lateral */
+    min-height: calc(100vh - 150px); /* Ocupa altura menos header/footer aprox. Ajusta! */
+  }
+  
+  /* La tarjeta de autenticación */
+  .auth-card {
+    background-color: var(--color-surface); /* Fondo blanco */
+    padding: 30px 40px 40px 40px; /* Padding interno (más abajo) */
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    max-width: 450px; /* Ancho máximo de la tarjeta */
+    text-align: center; /* Centrar texto interno como título */
+  }
+  
+  .auth-card h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: var(--color-primary); /* Color título */
+    font-size: 1.8em;
+  }
+  
+  /* Estilos para el formulario DENTRO de la tarjeta */
+  .auth-form .form-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinear labels e inputs a la izquierda */
+  }
+  
+  .auth-form .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: var(--color-text);
+  }
+  
+  /* Aplicar estilos uniformes a los inputs */
+  .auth-form .form-group input[type="text"],
+  .auth-form .form-group input[type="email"],
+  .auth-form .form-group input[type="password"] {
+    /* Heredar estilos base de index.css o definirlos aquí */
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-small);
+    box-sizing: border-box;
+    font-size: 1em;
+    background-color: #fdfdfd;
+    color: var(--color-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .auth-form .form-group input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }
+  
+  /* Botón de envío */
+  .auth-form .auth-submit.button { /* Ser más específico */
+    width: 100%; /* Ocupar todo el ancho de la tarjeta */
+    padding: 12px 20px;
+    font-size: 1.1em;
+    margin-top: 10px; /* Espacio sobre el botón */
+    /* Hereda colores de .button-primary */
+  }
+  
+  /* Mensajes de error */
+  .auth-card .error-message { /* Estilo para errores DENTRO de la tarjeta */
+      color: var(--color-accent);
+      background-color: #fbeae8;
+      border: 1px solid var(--color-accent);
+      padding: 10px 15px;
+      border-radius: var(--border-radius-small);
+      margin-bottom: 20px;
+      font-size: 0.9em;
+      text-align: center; /* Centrar texto de error */
+  }
+  
+  /* Enlaces adicionales (ej: a registro/login) */
+  .auth-link {
+      display: block;
+      margin-top: 25px;
+      font-size: 0.9em;
+      color: var(--color-text-light);
+  }
+  .auth-link a {
+      color: var(--color-secondary);
+      font-weight: 600;
+      text-decoration: underline;
+  }
+  .auth-link a:hover {
+      color: var(--color-primary);
+  }
